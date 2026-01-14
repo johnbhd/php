@@ -8,7 +8,14 @@ if (isset($_POST['btnsubmit'])) {
         if (mysqli_stmt_execute($stmt)) {
             $result = mysqli_stmt_get_result($stmt);
             if (mysqli_num_rows($result) > 0) {
-                echo "<p style = 'background-color: green;  margin-bottom: 10px; padding: 5px 20px; border-radius: 20px; color: white; text-align: center'>Login Successful!!!</p>";
+                $accounts = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                session_start();
+
+                $_SESSION['username'] = $accounts['username'];
+                $_SESSION['usertype'] = $accounts['usertype'];
+                
+
+                header('location: accounts-management.php');
             } else {
                 echo "<p style = 'background-color: red;  margin-bottom: 10px; padding: 5px 20px; border-radius: 20px; color: white; text-align: center'>Invalid username or password</p>";
             }
@@ -47,7 +54,7 @@ if (isset($_POST['btnsubmit'])) {
 
     }
     .container {
-        padding: 30px;
+        padding: 50px 30px;
         background-color: white;
         border-radius: 20px;
         width: 50vh;
@@ -59,8 +66,11 @@ if (isset($_POST['btnsubmit'])) {
     }
     h4 {
         text-align: center;
-        font-size: 20px;
+        font-size: 1.5rem;
         padding-bottom: 10px;
+    }
+    input {
+        padding: 5px 0px;
     }
     .btn {
         background-color: #2563EB;  
@@ -69,7 +79,7 @@ if (isset($_POST['btnsubmit'])) {
         padding: 5px 20px;
         border-radius: 10px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 1.2rem;
     }
 
     .btn:hover {
@@ -80,9 +90,9 @@ if (isset($_POST['btnsubmit'])) {
     <div class="container">
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="post">
             <h4>Login Page</h4>
-            Username: <input type="text" name="txtusername"> 
+            Username: <input type="text" name="txtusername"> <br>
             Password: <input type="text" name="txtpassword"> <br>
-            <input type="submit" name="btnsubmit" value="login" class="btn">
+            <input type="submit" name="btnsubmit" value="Login" class="btn">
         </form>
     </div>
 </body>
