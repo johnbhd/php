@@ -37,6 +37,7 @@ if (isset($_POST['btnsubmit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Page - Technical Management System</title>
+    <link rel="shortcut icon" href="aulogo.png" type="image/x-icon">
 </head>
 <style>
     * {
@@ -103,7 +104,7 @@ if (isset($_POST['btnsubmit'])) {
                 <option value ="TECHNICAL">TECHNICAL</option>
             </select>
             <br>
-            <input type="submit" name="btnsubmit" value="Login" class="btn">
+            <input type="submit" name="btnsubmit" value="Submit" class="btn">
             <a href="accounts-management.php">Cancel</a>
         </form>
     </div>

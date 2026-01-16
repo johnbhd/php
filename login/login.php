@@ -33,6 +33,7 @@ if (isset($_POST['btnsubmit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page - Technical Management System</title>
+    <link rel="shortcut icon" href="aulogo.png" type="image/x-icon">
 </head>
 <style>
     * {
