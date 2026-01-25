@@ -107,23 +107,30 @@
         border: 1px solid black;
         text-align: center;
     }
+    .actions {
+        display: flex;
+    }
     .actions a {
         text-decoration: none;
         color: white;
 
     }
-    .actions #update, #delete {
+    .actions .update, .delete {
         padding: 8px;
         margin: 5px;
         border-radius: 15px;
         cursor: pointer;
     }
-    .actions #update {
+    .actions .update {
         background-color: blue;
     }
-    .actions #delete {
+    .actions .delete {
         background-color: red;
     }
+    td.actions {
+        border: none;
+    }
+
 </style>
 <body>
     <nav>
@@ -172,8 +179,8 @@
                     echo "<td>" . $row['createdby'] . "</td>";
                     echo "<td>" . $row['datecreated'] . "</td>";
                     echo "<td class = 'actions'>";
-                    echo "<a href = 'update-account.php?username=". $row['username']. "' id='update'>Update</a>";
-                    echo "<a href = 'delete-account.php?username=". $row['username']. "' id='delete'>Delete</a>";
+                    echo "<a href = 'update-account.php?username=". $row['username']. "' class='update'>Update</a>";
+                    echo "<a href = 'delete-account.php?username=". $row['username']. "' class='delete'>Delete</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -211,5 +218,7 @@
         </div>
 
     </main>
+
+
 </body>
 </html>

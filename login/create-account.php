@@ -62,7 +62,7 @@ if (isset($_POST['btnsubmit'])) {
         padding: 50px 30px;
         background-color: white;
         border-radius: 20px;
-        width: 50vh;
+        width: 60vh;
     }
     form {
         display: flex;
@@ -89,6 +89,11 @@ if (isset($_POST['btnsubmit'])) {
 
     .btn:hover {
         background-color: #1D4ED8; 
+    }
+    form a { 
+        text-decoration: none;
+        color: black;
+        margin-top: 10px;
     }
 </style>
 <body>

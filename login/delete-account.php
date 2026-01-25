@@ -39,11 +39,139 @@ if (isset($_POST['btnsubmit'])) {
     <title>Delete Accounts Page - Technical Management System</title>
 </head>
 <body>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
-        <input type="hidden" name="txtusername" value="<?php echo trim($_GET['username'])?>">
-        <p>Are you sure want to delete this account</p>
-        <input type="submit" name="btnsubmit" value="YES">
-        <a href="accounts-management.php">NO</a>
-    </form>
+<style>
+        * {
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background-color: lightblue;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 1rem;
+        gap: 20px;
+        background-color: blue;
+        padding: 20px;
+    }
+    nav img {
+        width: 70px;
+        height: 70px;
+    }
+    .usernav {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    aside {
+        display: flex;
+        flex-direction: column;
+        padding: 20px 20px;
+        gap: 20px;
+        background-color: red;
+    }
+    aside a {
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1.3rem;
+    }
+    aside a:hover {
+        opacity: 80%;
+    }
+    main {
+        display: flex;
+        height: 100vh;
+      
+    }
+    .container {
+        padding: 20px 30px;
+        background-color: white;
+        width: 100%;
+    }
+    .popup-overlay {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    }
+    h4 {
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+    .popup-field {
+        background-color: white;
+        padding: 30px 20px;
+        border-radius: 5px;
+    }
+    form a {
+        text-decoration: none;
+        color: black;
+    }
+    .btnModal {
+        display: flex;
+        justify-content: center;
+        gap: 4vh;
+        padding-top: 20px;
+    }
+    #noBtn, #yesBtn {
+        padding: 5px 10px;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #yesBtn {
+        background-color: green;
+        border: none;
+    }
+    #noBtn {
+        background-color: red;
+    }
+</style>
+ <nav>
+        <img src="aulogo.png" alt="">
+        <div class="usernav">
+            <?php
+                if (isset($_SESSION['username'])) {
+                    echo "<h1>Welcome, ". $_SESSION['username'] . "</h1>";
+                    echo "<h1>Account Type: ". $_SESSION['usertype'] . "</h1>";
+                } else {
+                    header('location: login.php');
+                }
+            ?>
+        </div>
+
+    </nav>
+    <main>
+        <aside>
+            <a href="create-account.php">Create Account</a>
+            <a href="logout.php">Logout</a>
+
+        </aside>
+        <div class="container"></div>
+<div class="popup-overlay" > <!-- Show modal immediately -->
+    <div class="popup-field">
+        <div>
+            <h4>Delete Account</h4>
+        </div>
+        <div>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+                <input type="hidden" name="txtusername" value="<?php echo htmlspecialchars($_GET['username']); ?>">
+                <p>Are you sure you want to delete this account name <strong><?php echo htmlspecialchars($_GET['username']); ?></strong>?</p>
+                <div class="btnModal">
+                    <input type="submit" name="btnsubmit" value="YES" id="yesBtn">
+                    <a href="accounts-management.php" id="noBtn">NO</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
