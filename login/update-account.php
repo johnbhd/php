@@ -50,88 +50,146 @@ if (isset($_POST['btnsubmit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Accounts Page - Technical Management System</title>
-      <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 </head>
 <style>
-    * {
-        font-family: 'arial'; 
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-    body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-image: url('aubg.jpg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
+* {
+    font-family: Arial, sans-serif; 
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
-    }
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #111827;
+}
+
+.container {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 500px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+h4 {
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 10px;
+}
+
+input,
+select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #CBD5E1;
+    font-size: 1rem;
+    outline: none;
+}
+
+.btn {
+    background-color: #2563EB;  
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-top: 15px;    
+}
+
+.btn:hover {
+    background-color: #1D4ED8; 
+}
+
+form a { 
+    text-decoration: none;
+    color: #2563EB;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.passwordField {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+}
+
+.passwordField input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 0;
+    font-size: 1rem;
+}
+
+.passwordField .icon {
+    color: #64748B; 
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.passwordField .icon:hover {
+    color: #2563EB; 
+}
+.head-con {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+}
+img {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    border-radius: 100%;
+    margin: auto;
+}
+label {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
     .container {
-        padding: 50px 30px;
-        background-color: white;
-        border-radius: 20px;
-        width: 60vh;
+        padding: 30px 20px;
+        border-radius: 15px;
     }
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-    }
+
     h4 {
-        text-align: center;
-        font-size: 1.5rem;
-        padding-bottom: 10px;
+        font-size: 1.3rem;
     }
-    input, select {
-        padding: 5px 5px;
-    }
+
     .btn {
-        background-color: #2563EB;  
-        color: white;
-        border: none;
-        padding: 5px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 1.2rem;
-        margin-top: 15px;    
+        font-size: 1rem;
     }
+}
 
-    .btn:hover {
-        background-color: #1D4ED8; 
-    }
-    form a { 
-        text-decoration: none;
-        color: black;
-        margin-top: 5px;
-    }
-
-    .passwordField {
-        width: 100%;
-        border: 1px solid black;
-    }
-    .passwordField input {
-        border: none;
-        outline: none;
-    }
-    .passwordField .icon {
-        position: relative;
-        float: right;
-        padding: 5px 10px;
-        cursor: pointer;
-    }
 </style>
 <body>
     <div class="container">
-        <div>
+        <div class="head-con">
+            <img src="aulogo.png" alt="">
             <h4>Update User Accounts</h4>
             <p>Change the value on this form and submit to update the account...</p>
         </div>
