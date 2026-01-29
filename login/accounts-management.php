@@ -1,3 +1,7 @@
+<?php
+
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -187,14 +191,75 @@ td.actions {
     border: none;
 }
 
+.notification {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #FFFFFF; 
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-width: 300px;
+    animation: slideIn 0.5s ease, fadeOut 0.5s ease 3s forwards;
+}
 
+.notification-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.noti-head {
+    display: flex;
+    align-items: center;
+
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #e2e6e3; 
+    color: white;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #16a34a;
+}
+
+.noti-body {
+    padding-left: 34px; 
+}
+.notification.success {
+    background-color: #16a34a; 
+}
+
+.notification.error {
+    background-color: #f87171;
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Fade out after 3 seconds */
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
 </style>
 <body>
     <nav>
         <img src="aulogo.png" alt="">
         <div class="usernav">
             <?php
-                session_start();
+                
                 if (isset($_SESSION['username'])) {
                     echo "<h1>Welcome, ". $_SESSION['username'] . "</h1>";
                     echo "<h1>Account Type: ". $_SESSION['usertype'] . "</h1>";
@@ -212,6 +277,25 @@ td.actions {
 
         </aside>
         <div class="container">
+
+        <?php 
+        if (isset($_SESSION['message']) && $_SESSION['message']['type'] == 'success'): 
+            $type = $_SESSION['message']['type']; 
+            $text = $_SESSION['message']['text'];
+        ?>
+        <div class="notification <?php echo $type; ?>">
+            <div class="notification-body">
+                <div class="noti-head">
+                    <i class="fa-solid fa-check icon"></i>
+                    <h4><?php echo ucfirst($type); ?></h4>
+                </div>
+                <div class="noti-body">
+                    <p><?php echo $text; ?></p>
+                </div>
+            </div>
+        </div>
+        <?php unset($_SESSION['message']); endif; ?>
+
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="post">
                 <h4>Accounts Management</h4>
                 <div class="searchdiv">
@@ -278,4 +362,5 @@ td.actions {
 
 
 </body>
+
 </html>

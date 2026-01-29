@@ -14,7 +14,10 @@ if (isset($_POST['btnsubmit'])) {
                     $module = "Accounts Management";
                     mysqli_stmt_bind_param($stmt, "ssssss", $date, $time, $action, $module, $_SESSION['username'], $_GET['username']);
                     if (mysqli_stmt_execute($stmt)) {
-                        echo "User account updated";
+                          $_SESSION['message'] = [
+                                'type' => 'success',
+                                'text' => 'User account updated successfully!'
+                            ];
                         header("location: accounts-management.php");
                         exit();
                     } else {

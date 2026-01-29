@@ -14,10 +14,18 @@ if (isset($_POST['btnsubmit'])) {
                 $_SESSION['username'] = $accounts['username'];
                 $_SESSION['usertype'] = $accounts['usertype'];
                 
-
+                $_SESSION['message'] = [
+                    'type' => 'success',
+                    'text' => 'Login successful!'
+                ];
                 header('location: accounts-management.php');
+                exit;
             } else {
-                echo "<p style = 'background-color: red;  margin-bottom: 10px; padding: 5px 20px; border-radius: 20px; color: white; text-align: center'>Invalid username or password</p>";
+                $_SESSION['message'] = [
+                    'type' => 'error',
+                    'text' => 'Wrong username or password!'
+                ];
+                $error = "Wrong username or password.";
             }
         } else {
             echo "<p style='background-color: red; margin-bottom: 10px;  padding: 5px 20px; border-radius: 20px; color: white; text-align: center'>Execute Error: " . mysqli_stmt_error($stmt) . "</p>";
@@ -137,6 +145,70 @@ img {
 label {
     font-size: 1.1rem;
 }
+
+/* notification for all*/
+.notification {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #FFFFFF; 
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-width: 300px;
+        animation: slideIn 0.5s ease, fadeOut 0.5s ease 3s forwards;
+}
+
+.notification-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.noti-head {
+    display: flex;
+    align-items: center;
+
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #e2e6e3; 
+    color: white;
+    border-radius: 50%;
+    color: #f87171;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.noti-body {
+    padding-left: 34px; 
+}
+.notification.success {
+    background-color: #16a34a; 
+}
+
+.notification.error {
+    background-color: #f87171;
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
 @media (max-width: 480px) {
     .container {
         padding: 30px 20px;
@@ -155,6 +227,24 @@ label {
 </style>
 <body>
     <div class="container">
+        <?php if (isset($_SESSION['message']) && $_SESSION['message']['type'] == 'error'): 
+            $type = $_SESSION['message']['type']; 
+            $text = $_SESSION['message']['text'];
+        ?>
+        <div class="notification <?php echo $type; ?>">
+            <div class="notification-body">
+                <div class="noti-head">
+                    <i class="fa-solid fa-xmark icon"></i>
+                    <h4><?php echo ucfirst($type); ?></h4>
+                </div>
+                <div class="noti-body">
+                    <p><?php echo $text; ?></p>
+                </div>
+            </div>
+        </div>
+        <?php unset($_SESSION['message']); endif; ?>
+
+
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="post">
             <img src="aulogo.png" alt="">
             <h4>Login Page</h4>
@@ -162,7 +252,7 @@ label {
             <input type="text" name="txtusername"> <br>
             <label>Password: </label>
             <div class="passwordField">
-                <input type="password" name="txtpassword" id="passwordInput" value="<?php echo $accounts['password'];?>" required>
+                <input type="password" name="txtpassword" id="passwordInput"  required>
                 <i class="fa-solid fa-eye icon" id="passwordToggle"></i>
             </div>
             <input type="submit" name="btnsubmit" value="Login" class="btn">
@@ -170,19 +260,17 @@ label {
     </div>
 </body>
 <script>
-    const passwordToggle = document.getElementById('passwordToggle');
-    const passwordInput = document.getElementById('passwordInput');
-
-    passwordToggle.addEventListener('click', () => {
-        const isPassword = passwordInput.type === "password"
-        
-        passwordInput.type = isPassword ? "text" : "password";
-
-        
-        passwordToggle.classList.toggle("fa-eye", !isPassword);
-        passwordToggle.classList.toggle("fa-eye-slash", isPassword);
+const passwordToggle = document.getElementById('passwordToggle');
+const passwordInput = document.getElementById('passwordInput');
 
 
-    })
+passwordToggle.addEventListener('click', () => {
+    const isPassword = passwordInput.type === "password"
+    
+    passwordInput.type = isPassword ? "text" : "password";
+    passwordToggle.classList.toggle("fa-eye", !isPassword);
+    passwordToggle.classList.toggle("fa-eye-slash", isPassword);
+})
+
 </script>
 </html>

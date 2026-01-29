@@ -16,7 +16,10 @@ if (isset($_POST['btnsubmit'])) {
                     $module = "Accounts Management";
                     mysqli_stmt_bind_param($stmt, "ssssss", $date, $time, $action, $module, $_SESSION['username'], $_POST['txtusername']);
                     if (mysqli_stmt_execute($stmt)) {
-                        echo "User account deleted";
+                          $_SESSION['message'] = [
+                            'type' => 'success',
+                            'text' => 'User account successfully deleted!'
+                        ];
                         header("location: accounts-management.php");
                         exit();
                     } else {
@@ -40,100 +43,104 @@ if (isset($_POST['btnsubmit'])) {
 </head>
 <body>
 <style>
-        * {
-        font-family: Arial, Helvetica, sans-serif;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-    body {
-        background-color: lightblue;
-    }
-    nav {
-        display: flex;
-        align-items: center;
-        color: white;
-        font-size: 1rem;
-        gap: 20px;
-        background-color: blue;
-        padding: 20px;
-    }
-    nav img {
-        width: 70px;
-        height: 70px;
-    }
-    .usernav {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    }
-    aside {
-        display: flex;
-        flex-direction: column;
-        padding: 20px 20px;
-        gap: 20px;
-        background-color: red;
-    }
-    aside a {
-        text-decoration: none;
-        color: white;
-        cursor: pointer;
-        font-size: 1.3rem;
-    }
-    aside a:hover {
-        opacity: 80%;
-    }
-    main {
-        display: flex;
-        height: 100vh;
-      
-    }
-    .container {
-        padding: 20px 30px;
-        background-color: white;
-        width: 100%;
-    }
-    .popup-overlay {
-        display: flex;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        align-items: center;
-        justify-content: center;
-        z-index: 999;
-    }
-    h4 {
-        font-size: 20px;
-        padding-bottom: 10px;
-    }
-    .popup-field {
-        background-color: white;
-        padding: 30px 20px;
-        border-radius: 5px;
-    }
-    form a {
-        text-decoration: none;
-        color: black;
-    }
-    .btnModal {
-        display: flex;
-        justify-content: center;
-        gap: 4vh;
-        padding-top: 20px;
-    }
-    #noBtn, #yesBtn {
-        padding: 5px 10px;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    #yesBtn {
-        background-color: green;
-        border: none;
-    }
-    #noBtn {
-        background-color: red;
-    }
+    * {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    gap: 20px;
+    background-color: #1E293B;
+    color: #E2E8F0;
+    padding: 20px;
+}
+
+nav img {
+    width: 70px;
+    height: 70px;
+}
+
+.usernav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+aside {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+    gap: 30px;
+    background-color: #111827;
+}
+
+aside a {
+    text-decoration: none;
+    color: #CBD5E1;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+aside a:hover {
+    color: #FFFFFF;
+}
+
+main {
+    display: flex;
+    height: 100vh;
+}
+
+.container {
+    padding: 20px 30px;
+    background-color: #F1F5F9;
+    width: 100%;
+}
+.popup-overlay {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+h4 {
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+.popup-field {
+    background-color: white;
+    padding: 30px 20px;
+    border-radius: 5px;
+}
+form a {
+    text-decoration: none;
+    color: black;
+}
+.btnModal {
+    display: flex;
+    justify-content: center;
+    gap: 4vh;
+    padding-top: 20px;
+}
+#noBtn, #yesBtn {
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#yesBtn {
+    background-color: green;
+    border: none;
+}
+#noBtn {
+    background-color: red;
+}
 </style>
  <nav>
         <img src="aulogo.png" alt="">
@@ -156,8 +163,8 @@ if (isset($_POST['btnsubmit'])) {
 
         </aside>
         <div class="container"></div>
-<div class="popup-overlay" > <!-- Show modal immediately -->
-    <div class="popup-field">
+        <div class="popup-overlay" > 
+            <div class="popup-field">
         <div>
             <h4>Delete Account</h4>
         </div>
