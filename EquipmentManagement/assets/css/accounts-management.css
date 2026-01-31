@@ -1,0 +1,133 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 20px 30px;
+    background-color: #F1F5F9;
+    width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%; /* allow full width */
+    max-width: 100%; /* optional */
+}
+form h4 {
+    font-size: 2rem;
+}
+
+.searchdiv {
+    padding: 20px 0px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.searchdiv input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #CBD5E1;
+    outline: none;
+    font-size: 1rem;
+}
+
+.search-btn {
+    background-color: #4F46E5;
+    border: none;
+    border-radius: 6px;
+    padding: 0 15px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.search-btn i {
+    font-size: 1rem;
+}
+
+.search-btn:hover {
+    opacity: 0.8;
+}
+
+.searchdiv input[type="text"]:hover,
+.update:hover,
+.delete:hover {
+    opacity: 0.8;
+}
+
+.searchdiv input[type="submit"] {
+    background-color: #4F46E5;
+    padding: 5px 15px;
+    border: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+table {
+    border: 1px solid #CBD5E1;
+    border-collapse: collapse;
+    background-color: white;
+}
+th {
+    background-color: #303d52;
+    color: white;
+    padding: 15px 20px; 
+    font-size: 1.3rem;
+}
+td {
+    font-size: 1.1rem;
+    padding: 15px 20px; 
+}
+
+th {
+    background-color: #303d52;
+    color: white;
+    
+}
+tr, th, td {
+    border: 1px solid #CBD5E1;
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+}
+
+.actions a {
+    text-decoration: none;
+    color: white;
+}
+
+.actions .update,
+.actions .delete {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.actions .update {
+    background-color: #3B82F6;
+}
+
+.actions .delete {
+    background-color: #EF4444;
+}
+
+td.actions {
+    border: none;
+}
+
