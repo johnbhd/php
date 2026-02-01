@@ -28,13 +28,18 @@ if (isset($_POST['btnsubmit'])) {
             'text' => 'Login succesfully!'
         ];
     
-        if ($accounts['usertype'] == 'ADMIN') {
+        if ($accounts['usertype'] == 'ADMINISTRATOR' ) {
             header("Location: ./equipmentManagement/dashboard.php");
             exit;
         } else if ($accounts['usertype'] == 'TECHNICAL') {
             header("Location: ./userManagement/accounts-management.php");
             exit;
         } else {
+            $_SESSION["message"] = [
+                'type' => 'error',
+                'text' => 'Your usertype is USER cant login...'
+            ];
+            header("Location: ./login.php");
             exit;
         }
         

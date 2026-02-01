@@ -42,3 +42,6 @@ main {
     display: flex;
     height: 100vh;
 }
+.nav-title {
+    display: flex;
+}
