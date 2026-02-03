@@ -42,7 +42,6 @@ if (isset($_POST['btnsubmit'])) {
     <title>Delete Accounts Page - Technical Management System</title>
     <link rel="stylesheet" href="../assets/css/delete-account.css">
     <link rel="stylesheet" href="../assets/css/notification.css">
-    <link rel="stylesheet" href="../assets/css/nav-sidebar.css">
     <link rel="shortcut icon" href="../assets/img/aulogo.png" type="image/x-icon">
 </head>
 <body>

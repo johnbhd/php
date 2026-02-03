@@ -29,7 +29,7 @@ if (isset($_POST['btnsubmit'])) {
         ];
     
         if ($accounts['usertype'] == 'ADMINISTRATOR' ) {
-            header("Location: ./equipmentManagement/dashboard.php");
+            header("Location: ./equipmentManagement/equipment-management.php");
             exit;
         } else if ($accounts['usertype'] == 'TECHNICAL') {
             header("Location: ./userManagement/accounts-management.php");

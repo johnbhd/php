@@ -12,7 +12,6 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/accounts-management.css">
     <link rel="stylesheet" href="../assets/css/notification.css">
-    <link rel="stylesheet" href="../assets/css/nav-sidebar.css">
 </head>
 <body>
     <?php include("../includes/nav-sidebar.php")?>
