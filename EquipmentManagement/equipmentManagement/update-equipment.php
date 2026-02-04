@@ -1,12 +1,13 @@
 <?php
-
 require_once("../config/config.php");
 include("../auth/session-checker.php");
+
+$values = [];
+$errors = [];
 
 $assetNumber = $_GET["asset_number"];
 
 $sql = "SELECT * FROM tblequipments WHERE asset_number = ?";
-
 $stmt = mysqli_prepare($link, $sql);
 mysqli_stmt_bind_param($stmt, "s", $assetNumber);
 
@@ -14,42 +15,89 @@ if (mysqli_execute($stmt)) {
     $result = mysqli_stmt_get_result($stmt);
     $equipment = mysqli_fetch_array($result, MYSQLI_ASSOC);
 } else {
-     $_SESSION['message'] = [
+    $_SESSION['message'] = [
         'type' => 'error',
         'text' => 'Error fetch equipment data!'
     ];
 }
 
 if (isset($_POST['btnupdate'])) {
-   $serialNumber = $_POST['serialNumber'];
-   $equipmentType = $_POST['equipmentType'];
-   $manufacturer = $_POST['manufacturer'];
-   $yearModel = $_POST['yearModel'];
-   $description = $_POST['description'];
-   $AUBranch = $_POST['AUBranch'];
-   $AUDepartment = $_POST['AUDepartment'];
-   $status = $_POST['rbstatus'];
 
-   $sql = "UPDATE tblequipments SET serial_number=?, type=?, manufacturer=?, year_model=?, description=?, branch=?, department=?, status=? WHERE asset_number=?";
+    $values = [
+        'serialNumber'  => trim($_POST['serialNumber'] ?? ''),
+        'equipmentType' => trim($_POST['equipmentType'] ?? ''),
+        'manufacturer'  => trim($_POST['manufacturer'] ?? ''),
+        'yearModel'     => trim($_POST['yearModel'] ?? ''),
+        'description'   => trim($_POST['description'] ?? ''),
+        'AUBranch'      => trim($_POST['AUBranch'] ?? ''),
+        'AUDepartment'  => trim($_POST['AUDepartment'] ?? ''),
+        'status'        => $_POST['rbstatus'] ?? ''
+    ];
 
-   $stmt = mysqli_prepare($link, $sql);
-   mysqli_stmt_bind_param($stmt, "sssisssss", $serialNumber, $equipmentType, $manufacturer, $yearModel, $description, $AUBranch, $AUDepartment, $status, $assetNumber);
+    if (empty($values['serialNumber'])) {
+        $errors['serialNumber'] = "Serial Number is required.";
+    }
+    
+    if (empty($values['manufacturer'])) {
+        $errors['manufacturer'] = "Manufacturer is required.";
+    }
+    if (empty($values['yearModel'])) {
+        $errors['yearModel'] = "Year Model is required.";
+    } elseif (!is_numeric($values['yearModel'])) {
+        $errors['yearModel'] = "Must be numeric";
+    } elseif (!preg_match('/^\d{4}$/', $values['yearModel'])) {
+        $errors['yearModel'] = "Year Model must be exactly 4 digits.";
+    }
+    
 
-   if (mysqli_execute($stmt)) {
-        $_SESSION['message'] = [
-            'type' => 'success',
-             'text' => 'Successful updated this equipment #' . $assetNumber . "!"
-        ];
-        header("location: ./equipment-management.php");
-        exit();
-   } else {
-        $_SESSION['message'] = [
-            'type' => 'error',
-            'text' => 'Error updating this equipment #' . $assetNumber . "!"
-        ];
-   }
+    $checkSql = "SELECT * FROM tblequipments WHERE serial_number = ? AND asset_number != ?";
+    $stmtCheck = mysqli_prepare($link, $checkSql);
+    mysqli_stmt_bind_param($stmtCheck, "ss", $values['serialNumber'], $assetNumber);
+    mysqli_stmt_execute($stmtCheck);
+    $resultCheck = mysqli_stmt_get_result($stmtCheck);
+
+    if (mysqli_num_rows($resultCheck) > 0) {
+        $errors['serialNumber'] = "Serial Number already exists.";
+    }
+
+    if (empty($errors)) {
+
+        $sql = "UPDATE tblequipments 
+                SET serial_number=?, type=?, manufacturer=?, year_model=?, description=?, branch=?, department=?, status=? 
+                WHERE asset_number=?";
+
+        $stmt = mysqli_prepare($link, $sql);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "sssisssss",
+            $values['serialNumber'],
+            $values['equipmentType'],
+            $values['manufacturer'],
+            $values['yearModel'],
+            $values['description'],
+            $values['AUBranch'],
+            $values['AUDepartment'],
+            $values['status'],
+            $assetNumber
+        );
+
+        if (mysqli_execute($stmt)) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Successful updated this equipment #' . $assetNumber . "!"
+            ];
+            header("location: ./equipment-management.php");
+            exit();
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Error updating this equipment #' . $assetNumber . "!"
+            ];
+        }
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -206,6 +254,44 @@ textarea {
     }   
 }
 
+.cancel-btn:hover {
+    background-color: #111827;
+    color: white;
+}
+.input-div input.error,
+.input-div select.error {
+    border-color: red;
+}
+
+.input-div input.success,
+.input-div select.success {
+    border-color: green;
+}
+
+.input-div label span {
+    color: red;
+    font-weight: bold;
+}
+.input-div label span.valid {
+    color: green;
+    visibility: hidden;
+}
+#optional {
+    font-size: 1rem;
+    color: black;
+    font-weight: normal;
+}
+.labelInput {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.p-error {
+    color:red; 
+    font-size:0.9rem; 
+    margin:0;
+
+}
 </style>
 <body>
     
@@ -220,20 +306,33 @@ textarea {
                     <div class="col-div">
                         <div class="col1-input">
                             <div class="input-div">
-                                <label>Serial Number <span>*</span></label>
-                                <input type="text" value="<?php echo $equipment["serial_number"];?>" name="serialNumber">
+                                <label class="labelInput">
+                                    Serial Number 
+                                    <span class="<?= isset($errors['serialNumber']) ? '' : (!empty($values['serialNumber']) ? 'valid' : ''); ?>">*</span>
+                                    <p class="p-error"><?= $errors['serialNumber'] ?? '' ?></p>
+                                </label>
+                                <input type="text" name="serialNumber"
+                                    value="<?= htmlspecialchars($values['serialNumber'] ?? $equipment['serial_number']) ?>"
+                                    class="<?= isset($errors['serialNumber']) ? 'error' : (!empty($values['serialNumber']) ? 'success' : '') ?>">
                             </div>
-                               <div class="input-div">
-                                <label>Manufacturer <span>*</span></label>
-                                <input type="text" name="manufacturer" value="<?php echo $equipment["manufacturer"];?>">
-                            </div>
+
                             <div class="input-div">
-                                <label>Description <span>*</span></label>
+                               <label class="labelInput">
+                                    Manufacturer <span class="<?= isset($errors['manufacturer']) ? '' : (!empty($values['manufacturer']) ? 'valid' : ''); ?>">*</span>
+                                    <p class="p-error"><?= $errors['manufacturer'] ?? '' ?></p>
+                                </label>
+                                <input type="text" name="manufacturer"
+                                    value="<?= htmlspecialchars($values['manufacturer'] ?? $equipment['manufacturer']) ?>"
+                                    class="<?= isset($errors['manufacturer']) ? 'error' : (!empty($values['manufacturer']) ? 'success' : '') ?>">  
+                            </div>
+                            
+                            <div class="input-div">
+                                <label>Description <span></span></label>
                                 <textarea name="description"  ><?php echo $equipment["description"];?></textarea>
                             </div>
                      
                             <div class="input-div">
-                                <label>Department <span>*</span></label>
+                                <label>Department <span></span></label>
                                 <select name="AUDepartment" >
                                     <option value="<?php echo $equipment["department"];?>" selected hidden><?php echo $equipment["department"];?></option>
     
@@ -297,7 +396,7 @@ textarea {
                      
                          
                             <div class="input-div">
-                                <label>Equipment Type <span>*</span></label>
+                                <label>Equipment Type <span></span></label>
                                 <select id="" name="equipmentType" >
                                     <option value="<?php echo $equipment["type"];?>" selected hidden><?php echo $equipment["type"];?></option>
                                     <option value="Monitor">Monitor</option>
@@ -311,12 +410,19 @@ textarea {
 
                                 </select>
                             </div>
-                            <div class="input-div">
-                                <label>Year Model <span>*</span></label>
-                                <input type="text" value="<?php echo $equipment["year_model"];?>" name="yearModel" >
-                            </div>
+                         <div class="input-div">
+                            <label class="labelInput">
+                                Year Model 
+                                <span class="<?= isset($errors['yearModel']) ? '' : (!empty($values['yearModel']) ? 'valid' : ''); ?>">*</span>
+                                <p class="p-error"><?= $errors['yearModel'] ?? '' ?></p>
+                            </label>
+                            <input type="text" name="yearModel"
+                                value="<?= htmlspecialchars($values['yearModel'] ?? $equipment['year_model']) ?>"
+                                class="<?= isset($errors['yearModel']) ? 'error' : (!empty($values['yearModel']) ? 'success' : '') ?>">
+                        </div>
+
                             <div class="input-div" >
-                                <label>Branch <span>*</span></label>
+                                <label>Branch <span></span></label>
                                 <select name="AUBranch" >
                                     <option value="<?php echo $equipment["branch"];?>" selected hidden><?php echo $equipment["branch"];?></option>
                                     <option value="Juan Sumulong Campus (AU Legarda/Main)">Juan Sumulong Campus (AU Legarda/Main)</option>
@@ -330,7 +436,7 @@ textarea {
                                 </select>
                             </div>
                             <div class="input-div rb">
-                                <label>Equipment Status <span>*</span></label>
+                                <label>Equipment Status <span></span></label>
                                 <div class="rb-div">
                                     <div class="rb-input">
                                         <input type="radio" name="rbstatus" value="WORKING" <?php
@@ -370,4 +476,47 @@ textarea {
         </div>
     </main>
 </body>
+<script>
+const formFields = document.querySelectorAll('form input[type="text"], form select');
+
+formFields.forEach(field => {
+    const span = field.closest('.input-div')?.querySelector('span');
+    const errorP = field.closest('.input-div')?.querySelector('.p-error'); 
+
+    function validateField() {
+        const value = field.value.trim();
+        let isValid = true;
+
+        if (field.name === 'yearModel') {
+            if (!/^\d{4}$/.test(value)) {
+                isValid = false;
+                if (errorP) errorP.textContent = "Must be exactly 4 digits"; 
+            } else {
+                if (errorP) errorP.textContent = "";
+            }
+        } else {
+            if (value === '') {
+                isValid = false;
+                if (errorP) errorP.textContent = "This field is required";
+            } else {
+                if (errorP) errorP.textContent = "";
+            }
+        }
+
+        if (isValid) {
+            field.classList.add('success');     
+            field.classList.remove('error');     
+            if (span) span.classList.add('valid');
+        } else {
+            field.classList.remove('success');
+            field.classList.add('error');   
+            if (span) span.classList.remove('valid'); 
+        }
+    }
+
+    field.addEventListener('input', validateField);
+    field.addEventListener('change', validateField);
+});
+</script>
+
 </html>

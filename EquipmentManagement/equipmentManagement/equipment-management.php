@@ -256,11 +256,11 @@ td.actions {
                             echo "<td>" . $row['created_by'] . "</td>";
                             echo "<td class = 'actions'>";
                             echo "<a href = 'update-equipment.php?asset_number=". $row['asset_number']. "' class='update'>Update</a>";
-echo "<button type='button'
-        onclick=\"deleteModal('".$row['asset_number']."')\"
-        class='delete'>
-        Delete
-      </button>";
+                            echo "<button type='button'
+                                    onclick=\"deleteModal('".$row['asset_number']."')\"
+                                    class='delete'>
+                                    Delete
+                                </button>";
 
                             echo "</td>";
                             echo "</tr>";

@@ -7,8 +7,6 @@ $values = [];
 $errors = [];
 
 if (isset($_POST['btnadd'])) {
-    
-
     $values = [
         'assetNumber'   => trim($_POST['assetNumber'] ?? ''),
         'serialNumber'  => trim($_POST['serialNumber'] ?? ''),
@@ -18,6 +16,7 @@ if (isset($_POST['btnadd'])) {
         'AUBranch'      => trim($_POST['AUBranch'] ?? ''),
         'AUDepartment'  => trim($_POST['AUDepartment'] ?? '')
     ];
+
     if (empty($values['assetNumber'])) {
         $errors['assetNumber'] = "Asset Number is required.";
     }
