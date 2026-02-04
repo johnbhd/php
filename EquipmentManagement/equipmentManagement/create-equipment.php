@@ -1,6 +1,41 @@
 <?php
+require_once("../config/config.php");
+include("../auth/session-checker.php");
 
-session_start();
+if (isset($_POST['btnadd'])) {
+   $assetNumber = $_POST['assetNumber'];
+   $serialNumber = $_POST['serialNumber'];
+   $equipmentType = $_POST['equipmentType'];
+   $manufacturer = $_POST['manufacturer'];
+   $yearModel = $_POST['yearModel'];
+   $description = $_POST['description'];
+   $AUBranch = $_POST['AUBranch'];
+   $AUDepartment = $_POST['AUDepartment'];
+   $status = "WORKING";
+   $createdBy = $_SESSION['username'];
+
+   $sql = "INSERT INTO tblequipments (asset_number, serial_number, type, manufacturer, year_model, description, branch, department, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+
+   $stmt = mysqli_prepare($link, $sql);
+   mysqli_stmt_bind_param($stmt, "ssssisssss", $assetNumber, $serialNumber, $equipmentType, $manufacturer, $yearModel, $description, $AUBranch, $AUDepartment, $status, $createdBy);
+
+   if (mysqli_execute($stmt)) {
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => 'Successful created new equipments!'
+        ];
+        header("location: ./equipment-management.php");
+        exit();
+   } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Error creating new equipments!'
+        ];
+   }
+
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -135,17 +170,17 @@ form {
     <div class="container">
             <h4>Add Equipment</h4>
             <div class="wrapper">
-                <form action="">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
                     <div class="col-div">
                         <div class="col1-input">
                             <div class="input-div">
                                 <label>Asset Number <span>*</span></label>
-                                <input type="text" name="" id="">
+                                <input type="text" name="assetNumber" required>
                             </div>
                             <div class="input-div">
-                                <label>Select Type <span>*</span></label>
-                                <select id="">
-                                    <option disabled selected hidden>Choose equipment type</option>
+                                <label>Equipment Type <span>*</span></label>
+                                <select id="" name="equipmentType" required>
+                                    <option value="" disabled selected hidden>Choose equipment type</option>
                                     <option value="Monitor">Monitor</option>
                                     <option value="CPU">CPU</option>
                                     <option value="Keyboard">Keyboard</option>
@@ -159,33 +194,12 @@ form {
                             </div>
                             <div class="input-div">
                                 <label>Year Model <span>*</span></label>
-                                <input type="text" name="" id="">
+                                <input type="text" name="yearModel" required>
                             </div>
-                            <div class="input-div">
-                                <label>Description <span>*</span></label>
-                                <textarea type="" name="" id=""></textarea>
-                            </div>
-                        </div>
-
-
-                        
-                        <div class="col2-input">
-                            <div class="input-div">
-                                <label>Serial Number <span>*</span></label>
-                                <input type="text" name="" id="">
-                            </div>
-                            <div class="input-div">
-                                <label>Manufacturer <span>*</span></label>
-                                <input type="text" name="" id="">
-                            </div>
-                            <div class="input-div">
-                                <label>Asset Number <span>*</span></label>
-                                <input type="text" name="" id="">
-                            </div>
-                            <div class="input-div">
+                            <div class="input-div" style="margin-top: 18px;">
                                 <label>Branch <span>*</span></label>
-                                <select id="">
-                                    <option disabled selected hidden>-- Choose AU Branch --</option>
+                                <select name="AUBranch" required>
+                                    <option value="" disabled selected hidden>-- Choose AU Branch --</option>
                                     <option value="Juan Sumulong Campus (AU Legarda/Main)">Juan Sumulong Campus (AU Legarda/Main)</option>
                                     <option value="Jose Abad Santos Campus (AU Pasay)">Jose Abad Santos Campus (AU Pasay)</option>
                                     <option value="Arellano School of Law">Arellano School of Law</option>
@@ -195,6 +209,82 @@ form {
                                     <option value="Apolinario Mabini Campus (AU Pasay)">Apolinario Mabini Campus (AU Pasay)</option>
                                     <option value="Elisa Esguerra Campus (AU Malabon)">Elisa Esguerra Campus (AU Malabon)</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- Col 2 -->
+                        <div class="col2-input">
+                            <div class="input-div">
+                                <label>Serial Number <span>*</span></label>
+                                <input type="text" name="serialNumber">
+                            </div>
+                            <div class="input-div">
+                                <label>Manufacturer <span>*</span></label>
+                                <input type="text" name="manufacturer">
+                            </div>
+                            <div class="input-div">
+                                <label>Description <span>*</span></label>
+                                <textarea name="description" required></textarea>
+                            </div>
+                            
+                            <div class="input-div">
+                                <label>Department <span>*</span></label>
+                                <select name="AUDepartment" required>
+                                    <option value="" disabled selected hidden>-- Select Department --</option>
+
+                                    <optgroup label="Colleges / Schools">
+                                        <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                                        <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                                        <option value="Institute of Accountancy">Institute of Accountancy</option>
+                                        <option value="School of Computer Science / Information Technology">School of Computer Science / Information Technology</option>
+                                        <option value="School of Business and Administration">School of Business and Administration</option>
+                                        <option value="School of Education">School of Education</option>
+                                        <option value="Allied Medical Programs">Allied Medical Programs</option>
+                                        <option value="School of Hospitality and Tourism Management">School of Hospitality and Tourism Management</option>
+                                        <option value="Graduate School of Education">Graduate School of Education</option>
+                                        <option value="Graduate School of Nursing">Graduate School of Nursing</option>
+                                        <option value="Graduate School of Business">Graduate School of Business</option>
+                                        <option value="College of Nursing">College of Nursing</option>
+                                        <option value="College of Medical Laboratory Science">College of Medical Laboratory Science</option>
+                                        <option value="School of Midwifery">School of Midwifery</option>
+                                        <option value="College of Information Technology">College of Information Technology</option>
+                                        <option value="School of Business Technology">School of Business Technology</option>
+                                    </optgroup>
+
+                                    <optgroup label="Basic Education">
+                                        <option value="Pre-School">Pre-School</option>
+                                        <option value="Kindergarten">Kindergarten</option>
+                                        <option value="Elementary">Elementary</option>
+                                        <option value="Junior High School">Junior High School</option>
+                                        <option value="Senior High School">Senior High School</option>
+                                    </optgroup>
+
+                                    <optgroup label="Administrative Offices">
+                                        <option value="Office of the President">Office of the President</option>
+                                        <option value="Office of the Vice President for Academic Affairs">Office of the Vice President for Academic Affairs</option>
+                                        <option value="Office of the Vice President for Administration">Office of the Vice President for Administration</option>
+                                        <option value="Registrar’s Office">Registrar’s Office</option>
+                                        <option value="Accounting Office">Accounting Office</option>
+                                        <option value="Finance Office">Finance Office</option>
+                                        <option value="Human Resource Office">Human Resource Office</option>
+                                        <option value="Information Technology Office">Information Technology Office</option>
+                                        <option value="Library">Library</option>
+                                        <option value="Guidance Office">Guidance Office</option>
+                                        <option value="Admissions Office">Admissions Office</option>
+                                        <option value="Scholarship Office">Scholarship Office</option>
+                                        <option value="Research Office">Research Office</option>
+                                        <option value="Community Extension Office">Community Extension Office</option>
+                                        <option value="Security Office">Security Office</option>
+                                        <option value="Maintenance Office">Maintenance Office</option>
+                                        <option value="Procurement Office">Procurement Office</option>
+                                        <option value="Property Office">Property Office</option>
+                                        <option value="Quality Assurance Office">Quality Assurance Office</option>
+                                        <option value="Alumni Office">Alumni Office</option>
+                                        <option value="Public Affairs Office">Public Affairs Office</option>
+                                        <option value="Clinic / Health Services">Clinic / Health Services</option>
+                                    </optgroup>
+                                </select>
+
                             </div>
                         </div>
                     </div>

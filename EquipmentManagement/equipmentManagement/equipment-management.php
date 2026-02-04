@@ -1,6 +1,8 @@
 <?php
+require_once("../config/config.php");
+include("../auth/session-checker.php");
 
-session_start();
+
 ?>
 
 <!DOCTYPE html>
@@ -238,12 +240,13 @@ td.actions {
                     if (mysqli_num_rows($result) > 0) {
                         echo "<table>";
                         echo "<tr>";
-                        echo "<th>Asset No.</th><th>Serial No.</th><th>Type</th><th>Branch</th><th>Status</th><th>Created By</th>";
+                        echo "<th>Asset No.</th><th>Serial No.</th><th>Type</th><th>Branch</th><th>Status</th><th>Created By</th><th>Actions</th>";
                         echo "</tr>";
                         while ($row = mysqli_fetch_array($result)) {
                             echo "<tr>";
                             echo "<td>" . $row['asset_number'] . "</td>";
                             echo "<td>" . $row['serial_number'] . "</td>";
+                            echo "<td>" . $row['type'] . "</td>";
                             echo "<td>" . $row['branch'] . "</td>";
                             echo "<td>" . $row['status'] . "</td>";
                             echo "<td>" . $row['created_by'] . "</td>";
@@ -258,8 +261,6 @@ td.actions {
                         echo "No record/s found.";
                     }
                 }
-
-                require_once "../config/config.php";
 
                 if (isset($_POST['btnsearch'])) {
                     $sql = "SELECT * FROM tblequipments WHERE asset_number LIKE ? OR serial_number LIKE ? OR type LIKE ? OR branch LIKE ? OR status LIKE ? OR department LIKE ? ORDER BY date_created";

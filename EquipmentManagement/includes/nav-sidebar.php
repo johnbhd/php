@@ -1,5 +1,3 @@
-
-
 <style>
 html, body {
     height: 100%;
@@ -31,6 +29,7 @@ aside {
     display: flex;
     flex-direction: column;
     padding: 30px 40px;
+    min-height: 100vh; 
     gap: 30px;
     background-color: #111827;
 }
@@ -48,7 +47,7 @@ aside a:hover {
 
 main {
     display: flex;
-    height: 100vh;
+       min-height: 100vh;
 }
 .nav-title {
     display: flex;

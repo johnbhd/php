@@ -1,6 +1,54 @@
 <?php
 
-session_start();
+require_once("../config/config.php");
+include("../auth/session-checker.php");
+
+$assetNumber = $_GET["asset_number"];
+
+$sql = "SELECT * FROM tblequipments WHERE asset_number = ?";
+
+$stmt = mysqli_prepare($link, $sql);
+mysqli_stmt_bind_param($stmt, "s", $assetNumber);
+
+if (mysqli_execute($stmt)) {
+    $result = mysqli_stmt_get_result($stmt);
+    $equipment = mysqli_fetch_array($result, MYSQLI_ASSOC);
+} else {
+     $_SESSION['message'] = [
+        'type' => 'error',
+        'text' => 'Error fetch equipment data!'
+    ];
+}
+
+if (isset($_POST['btnupdate'])) {
+   $serialNumber = $_POST['serialNumber'];
+   $equipmentType = $_POST['equipmentType'];
+   $manufacturer = $_POST['manufacturer'];
+   $yearModel = $_POST['yearModel'];
+   $description = $_POST['description'];
+   $AUBranch = $_POST['AUBranch'];
+   $AUDepartment = $_POST['AUDepartment'];
+   $status = $_POST['rbstatus'];
+
+   $sql = "UPDATE tblequipments SET serial_number=?, type=?, manufacturer=?, year_model=?, description=?, branch=?, department=?, status=? WHERE asset_number=?";
+
+   $stmt = mysqli_prepare($link, $sql);
+   mysqli_stmt_bind_param($stmt, "sssisssss", $serialNumber, $equipmentType, $manufacturer, $yearModel, $description, $AUBranch, $AUDepartment, $status, $assetNumber);
+
+   if (mysqli_execute($stmt)) {
+        $_SESSION['message'] = [
+            'type' => 'success',
+             'text' => 'Successful updated this equipment #' . $assetNumber . "!"
+        ];
+        header("location: ./equipment-management.php");
+        exit();
+   } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Error updating this equipment #' . $assetNumber . "!"
+        ];
+   }
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,14 +110,14 @@ form {
     flex-direction: column;
     gap: 10px;
 }
-.input-div input, select, textarea {
+.input-div input[type = "text"], select, textarea {
     padding: 10px 10px;
     outline: none;
     border: 1px solid #CBD5E1;
     border-radius: 5px;
     font-size: 1rem;
 }
-.input-div input:focus, select:focus, textarea:focus {
+.input-div input[type = "text"]:focus, select:focus, textarea:focus {
     border-color: #111827;
     box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.25);
 }
@@ -119,6 +167,38 @@ textarea {
     background-color: #111827;
     color: white;
 }
+.update-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.update-title .asset-number {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #3B82F6; 
+    margin-left: 8px;
+}
+
+.rb {
+    margin-top: 20px;
+}
+.rb-div {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+}
+.rb-input {
+    display: flex;
+    gap: 10px;
+}
+.rb-input input {
+    outline: none;
+}
+.rb-input label {
+    font-size: 1.1rem;
+}
+
 @media screen and (max-width:  768px) {
     .col-div {
         display: flex;
@@ -131,25 +211,95 @@ textarea {
     
     <?php include("../includes/nav-sidebar.php");?>
     <div class="container">
-            <h4>Update Equipment > 
-                <span>#
-                    <?php 
-                        echo $_GET["asset_number"];
-                    ?>
-                </span>
+            <h4 class="update-title">
+                Update Equipment <span class="asset-number">#<?php echo $assetNumber ?></span>
             </h4>
+
             <div class="wrapper">
-                <form action="">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . '?asset_number=' . $assetNumber;?>" method="POST">
                     <div class="col-div">
                         <div class="col1-input">
                             <div class="input-div">
-                                <label>Asset Number <span>*</span></label>
-                                <input type="text" name="" id="">
+                                <label>Serial Number <span>*</span></label>
+                                <input type="text" value="<?php echo $equipment["serial_number"];?>" name="serialNumber">
+                            </div>
+                               <div class="input-div">
+                                <label>Manufacturer <span>*</span></label>
+                                <input type="text" name="manufacturer" value="<?php echo $equipment["manufacturer"];?>">
                             </div>
                             <div class="input-div">
-                                <label>Select Type <span>*</span></label>
-                                <select id="">
-                                    <option disabled selected hidden>Choose equipment type</option>
+                                <label>Description <span>*</span></label>
+                                <textarea name="description"  ><?php echo $equipment["description"];?></textarea>
+                            </div>
+                     
+                            <div class="input-div">
+                                <label>Department <span>*</span></label>
+                                <select name="AUDepartment" >
+                                    <option value="<?php echo $equipment["department"];?>" selected hidden><?php echo $equipment["department"];?></option>
+    
+                                    <optgroup label="Colleges / Schools">
+                                        <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                                        <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                                        <option value="Institute of Accountancy">Institute of Accountancy</option>
+                                        <option value="School of Computer Science / Information Technology">School of Computer Science / Information Technology</option>
+                                        <option value="School of Business and Administration">School of Business and Administration</option>
+                                        <option value="School of Education">School of Education</option>
+                                        <option value="Allied Medical Programs">Allied Medical Programs</option>
+                                        <option value="School of Hospitality and Tourism Management">School of Hospitality and Tourism Management</option>
+                                        <option value="Graduate School of Education">Graduate School of Education</option>
+                                        <option value="Graduate School of Nursing">Graduate School of Nursing</option>
+                                        <option value="Graduate School of Business">Graduate School of Business</option>
+                                        <option value="College of Nursing">College of Nursing</option>
+                                        <option value="College of Medical Laboratory Science">College of Medical Laboratory Science</option>
+                                        <option value="School of Midwifery">School of Midwifery</option>
+                                        <option value="College of Information Technology">College of Information Technology</option>
+                                        <option value="School of Business Technology">School of Business Technology</option>
+                                    </optgroup>
+    
+                                    <optgroup label="Basic Education">
+                                        <option value="Pre-School">Pre-School</option>
+                                        <option value="Kindergarten">Kindergarten</option>
+                                        <option value="Elementary">Elementary</option>
+                                        <option value="Junior High School">Junior High School</option>
+                                        <option value="Senior High School">Senior High School</option>
+                                    </optgroup>
+    
+                                    <optgroup label="Administrative Offices">
+                                        <option value="Office of the President">Office of the President</option>
+                                        <option value="Office of the Vice President for Academic Affairs">Office of the Vice President for Academic Affairs</option>
+                                        <option value="Office of the Vice President for Administration">Office of the Vice President for Administration</option>
+                                        <option value="Registrar’s Office">Registrar’s Office</option>
+                                        <option value="Accounting Office">Accounting Office</option>
+                                        <option value="Finance Office">Finance Office</option>
+                                        <option value="Human Resource Office">Human Resource Office</option>
+                                        <option value="Information Technology Office">Information Technology Office</option>
+                                        <option value="Library">Library</option>
+                                        <option value="Guidance Office">Guidance Office</option>
+                                        <option value="Admissions Office">Admissions Office</option>
+                                        <option value="Scholarship Office">Scholarship Office</option>
+                                        <option value="Research Office">Research Office</option>
+                                        <option value="Community Extension Office">Community Extension Office</option>
+                                        <option value="Security Office">Security Office</option>
+                                        <option value="Maintenance Office">Maintenance Office</option>
+                                        <option value="Procurement Office">Procurement Office</option>
+                                        <option value="Property Office">Property Office</option>
+                                        <option value="Quality Assurance Office">Quality Assurance Office</option>
+                                        <option value="Alumni Office">Alumni Office</option>
+                                        <option value="Public Affairs Office">Public Affairs Office</option>
+                                        <option value="Clinic / Health Services">Clinic / Health Services</option>
+                                    </optgroup>
+                                </select>
+    
+                            </div>
+                        </div>
+                        <!-- Col 2 -->
+                        <div class="col2-input">
+                     
+                         
+                            <div class="input-div">
+                                <label>Equipment Type <span>*</span></label>
+                                <select id="" name="equipmentType" >
+                                    <option value="<?php echo $equipment["type"];?>" selected hidden><?php echo $equipment["type"];?></option>
                                     <option value="Monitor">Monitor</option>
                                     <option value="CPU">CPU</option>
                                     <option value="Keyboard">Keyboard</option>
@@ -163,30 +313,12 @@ textarea {
                             </div>
                             <div class="input-div">
                                 <label>Year Model <span>*</span></label>
-                                <input type="text" name="" id="">
+                                <input type="text" value="<?php echo $equipment["year_model"];?>" name="yearModel" >
                             </div>
-                            <div class="input-div">
-                                <label>Description <span>*</span></label>
-                                <textarea type="" name="" id=""></textarea>
-                            </div>
-                        </div>
-                        <div class="col2-input">
-                            <div class="input-div">
-                                <label>Serial Number <span>*</span></label>
-                                <input type="text" name="" id="">
-                            </div>
-                            <div class="input-div">
-                                <label>Manufacturer <span>*</span></label>
-                                <input type="text" name="" id="">
-                            </div>
-                            <div class="input-div">
-                                <label>Asset Number <span>*</span></label>
-                                <input type="text" name="" id="">
-                            </div>
-                            <div class="input-div">
+                            <div class="input-div" >
                                 <label>Branch <span>*</span></label>
-                                <select id="">
-                                    <option disabled selected hidden>-- Choose AU Branch --</option>
+                                <select name="AUBranch" >
+                                    <option value="<?php echo $equipment["branch"];?>" selected hidden><?php echo $equipment["branch"];?></option>
                                     <option value="Juan Sumulong Campus (AU Legarda/Main)">Juan Sumulong Campus (AU Legarda/Main)</option>
                                     <option value="Jose Abad Santos Campus (AU Pasay)">Jose Abad Santos Campus (AU Pasay)</option>
                                     <option value="Arellano School of Law">Arellano School of Law</option>
@@ -197,10 +329,35 @@ textarea {
                                     <option value="Elisa Esguerra Campus (AU Malabon)">Elisa Esguerra Campus (AU Malabon)</option>
                                 </select>
                             </div>
+                            <div class="input-div rb">
+                                <label>Equipment Status <span>*</span></label>
+                                <div class="rb-div">
+                                    <div class="rb-input">
+                                        <input type="radio" name="rbstatus" value="WORKING" <?php
+                                            if ($equipment['status'] === "WORKING") echo "checked";
+                                        ?>>    
+                                        <label>Working</label>
+                                    </div>
+                                    <div class="rb-input">
+                                        <input type="radio" name="rbstatus" value="ON-REPAIR" <?php
+                                            if ($equipment['status']== "ON-REPAIR") echo "checked";
+                                        ?>>                                   
+                                        <label>On Repair</label>
+                                    </div>
+                                    <div class="rb-input">
+                                        <input type="radio" name="rbstatus" value="RETIRED" <?php
+                                            if ($equipment['status'] === "RETIRED") echo "checked";
+                                        ?>>
+                                        <label>Retired</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="btn-div">
-                        <button type="submit" name="btnadd" class="add-btn">
+                        <button type="submit" name="btnupdate" class="add-btn">
                             Save
                         </button>
                         <a href="./equipment-management.php" class="cancel-btn">
