@@ -161,7 +161,7 @@ tr, th, td {
     justify-content: center;
 }
 
-.actions a {
+.actions a, .actions button {
     text-decoration: none;
     color: white;
 }
@@ -180,6 +180,9 @@ tr, th, td {
 
 .actions .delete {
     background-color: #EF4444;
+    font-size: 1rem;
+    border: none;
+    outline: none;
 }
 
 td.actions {
@@ -199,6 +202,7 @@ td.actions {
 <body>
     <?php include("../includes/nav-sidebar.php");?>
         <div class="container">
+  
 
 
         <?php 
@@ -252,7 +256,12 @@ td.actions {
                             echo "<td>" . $row['created_by'] . "</td>";
                             echo "<td class = 'actions'>";
                             echo "<a href = 'update-equipment.php?asset_number=". $row['asset_number']. "' class='update'>Update</a>";
-                            echo "<a href = 'delete-account.php?asset_number=". $row['asset_number']. "' class='delete'>Delete</a>";
+echo "<button type='button'
+        onclick=\"deleteModal('".$row['asset_number']."')\"
+        class='delete'>
+        Delete
+      </button>";
+
                             echo "</td>";
                             echo "</tr>";
                         }
@@ -289,5 +298,7 @@ td.actions {
 
         </div>
     </main>
+          <?php include("./delete-equipment.php");?>
 </body>
+
 </html>
