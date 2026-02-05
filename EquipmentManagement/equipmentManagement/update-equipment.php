@@ -81,12 +81,24 @@ if (isset($_POST['btnupdate'])) {
             $assetNumber
         );
 
+
         if (mysqli_execute($stmt)) {
-            $_SESSION['message'] = [
-                'type' => 'success',
-                'text' => 'Successful updated this equipment #' . $assetNumber . "!"
-            ];
-            header("location: ./equipment-management.php");
+            $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?);";
+            $logsStmt = mysqli_prepare($link, $logs);
+
+            $date = date("d/m/Y");
+            $time = date("h:i:sa");
+            $action = "Update equipments";
+            $module = "Equipments Management";
+            
+            mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $_GET["asset_number"]);
+            if (mysqli_execute($logsStmt)) {
+                $_SESSION['message'] = [
+                    'type' => 'success',
+                    'text' => 'Successful updated this equipment #' . $assetNumber . "!"
+                ];
+                header("location: ./equipment-management.php");
+            }
             exit();
         } else {
             $_SESSION['message'] = [

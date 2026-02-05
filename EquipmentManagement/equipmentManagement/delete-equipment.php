@@ -9,14 +9,25 @@ if (isset($_POST['btndelete'])) {
         mysqli_stmt_bind_param($stmt, "s", $id);
         mysqli_stmt_execute($stmt);
 
-        $_SESSION['message'] = [
-            'type' => 'success',
-            'text' => 'Successfully deleted equipment #'.$id.'.'
-        ];
-        echo "<script>
-            window.location.href = '{$_SERVER['PHP_SELF']}';
-        </script>";
-        exit;
+        $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?);";
+        $logsStmt = mysqli_prepare($link, $logs);
+
+        $date = date("d/m/Y");
+        $time = date("h:i:sa");
+        $action = "Delete equipments";
+        $module = "Equipments Management";
+        
+        mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $id);
+        if (mysqli_execute($logsStmt)) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Successfully deleted equipment #'.$id.'.'
+            ];
+            echo "<script>
+                window.location.href = '{$_SERVER['PHP_SELF']}';
+            </script>";
+            exit;
+        }
 
     } else {
         $_SESSION['message'] = [

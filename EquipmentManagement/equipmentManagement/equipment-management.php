@@ -155,6 +155,9 @@ tr, th, td {
     text-align: center;
     white-space: nowrap;
 }
+tr:nth-child(odd) {
+    background-color: #f9f9fb;
+}
 
 .actions {
     display: flex;
@@ -188,6 +191,19 @@ tr, th, td {
 td.actions {
     border: none;
 }
+.countTotal td {
+    border: none !important;
+    background-color: #ececec;
+    padding: 12px 14px;
+    font-weight: 600;
+}
+
+.countTotal td:last-child {
+    font-weight: 700;
+    text-align: center;
+}
+
+
 
 @media screen and (max-width:  768px) {
     .mobile-block {
@@ -261,10 +277,14 @@ td.actions {
                                     class='delete'>
                                     Delete
                                 </button>";
-
                             echo "</td>";
                             echo "</tr>";
                         }
+                        echo "<tr class='countTotal'>";
+                        echo "<td>Total of Equipments</td>";
+                        echo "<td colspan='5'></td>";
+                        echo "<td>". mysqli_num_rows($result)."</td>";
+                        echo "</tr>";
                         echo "</table>";
                     } else {
                         echo "No record/s found.";

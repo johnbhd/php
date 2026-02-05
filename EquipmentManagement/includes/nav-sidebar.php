@@ -28,7 +28,7 @@ nav img {
 aside {
     display: flex;
     flex-direction: column;
-    padding: 30px 40px;
+    padding: 30px 50px;
     min-height: 100vh; 
     gap: 30px;
     background-color: #111827;
@@ -128,7 +128,7 @@ main {
     </nav>
     <main>
         <aside id="sidebar">
-            <a href="../userManagement/create-account.php">Create Account</a>
+            <a href="../equipmentManagement/equipment-management.php">Home</a>
             <a href="../auth/logout.php">Logout</a>
 
         </aside>
