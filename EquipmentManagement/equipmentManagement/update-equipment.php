@@ -98,6 +98,7 @@ if (isset($_POST['btnupdate'])) {
                     'text' => 'Successful updated this equipment #' . $assetNumber . "!"
                 ];
                 header("location: ./equipment-management.php");
+
             }
             exit();
         } else {
