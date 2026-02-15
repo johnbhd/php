@@ -243,7 +243,7 @@ td.actions {
                 <h4>Equipments</h4>
                 <div class="head-con">
                     <div class="searchdiv">
-                        <input type="text" name="txtsearch" placeholder="Search accounts...">
+                        <input type="text" name="txtsearch" placeholder="Search equipments...">
                         <button type="submit" name="btnsearch" class="search-btn">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>

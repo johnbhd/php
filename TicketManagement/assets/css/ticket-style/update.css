@@ -1,0 +1,182 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #e6e9eb;  
+
+}
+.container {
+    padding: 30px 30px;
+    width: 100%;
+    height: 100%;
+}
+.container h4 {
+    font-size: 2rem;
+}
+.wrapper {
+    background-color: #fafafa;
+    width: 100%; 
+    height: auto;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+}
+
+.col-div {
+    display: flex;
+    gap: 30px;
+}
+.col1-input, .col2-input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+.input-div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.input-div input[type = "text"], select, textarea {
+    padding: 10px 10px;
+    outline: none;
+    border: 1px solid #CBD5E1;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+.input-div input[type = "text"]:focus, select:focus, textarea:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.25);
+}
+.input-div label {
+    font-size: 1.3rem;
+}
+textarea {
+    resize: vertical;
+}
+
+.btn-div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.add-btn {
+    background-color: #354d74;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.add-btn:hover {
+    background-color: #1f2937;
+    transform: translateY(-1px);
+}
+
+.cancel-btn {
+    background-color: transparent;
+    color: #111827;
+    border: 1px solid #111827;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #111827;
+    color: white;
+}
+.update-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.update-title .asset-number {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #3B82F6; 
+    margin-left: 8px;
+}
+
+.rb {
+    margin-top: 20px;
+}
+.rb-div {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+}
+.rb-input {
+    display: flex;
+    gap: 10px;
+}
+.rb-input input {
+    outline: none;
+}
+.rb-input label {
+    font-size: 1.1rem;
+}
+
+@media screen and (max-width:  768px) {
+    .col-div {
+        display: flex;
+        flex-direction: column;
+    }   
+}
+
+.cancel-btn:hover {
+    background-color: #111827;
+    color: white;
+}
+.input-div input.error,
+.input-div select.error {
+    border-color: red;
+}
+
+.input-div input.success,
+.input-div select.success {
+    border-color: green;
+}
+
+.input-div label span {
+    color: red;
+    font-weight: bold;
+}
+.input-div label span.valid {
+    color: green;
+    visibility: hidden;
+}
+#optional {
+    font-size: 1rem;
+    color: black;
+    font-weight: normal;
+}
+.labelInput {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.p-error {
+    color:red; 
+    font-size:0.9rem; 
+    margin:0;
+
+}
