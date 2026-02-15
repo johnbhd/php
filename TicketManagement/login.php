@@ -29,16 +29,15 @@ if (isset($_POST['btnsubmit'])) {
         ];
     
         if ($accounts['usertype'] == 'ADMINISTRATOR' ) {
-            header("Location: ./ticket-management/ticket-management.php");
-            exit;
-        } else if ($accounts['usertype'] == 'TECHNICAL') {
             header("Location: ./userManagement/accounts-management.php");
             exit;
+        } else if ($accounts['usertype'] == 'TECHNICAL') {
+            header("Location: ./equipmentManagement/equipment-management.php");
+            exit;
+        } else if ($accounts['usertype'] == 'USER') {
+            header("Location: ./ticket-management/ticket-management.php");
+            exit;
         } else {
-            $_SESSION["message"] = [
-                'type' => 'error',
-                'text' => 'Your usertype is USER cant login...'
-            ];
             header("Location: ./login.php");
             exit;
         }

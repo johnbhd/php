@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 15, 2026 at 05:07 AM
+-- Generation Time: Feb 15, 2026 at 03:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,8 +42,9 @@ CREATE TABLE `tblaccounts` (
 
 INSERT INTO `tblaccounts` (`username`, `password`, `usertype`, `status`, `createdby`, `datecreated`) VALUES
 ('admin', 'admin123', 'ADMINISTRATOR', 'ACTIVE', 'admin', '14/01/26'),
-('JohnBenedict', 'Villegas', 'ADMINISTRATOR', 'ACTIVE', 'Villegas', '16/01/26'),
-('tech', 'tech123', 'TECHNICAL', 'ACTIVE', 'admin', '14/01/26');
+('JohnBenedict', 'Villegas', 'USER', 'ACTIVE', 'admin', '16/01/26'),
+('tech', 'tech123', 'TECHNICAL', 'ACTIVE', 'admin', '14/01/26'),
+('user', 'user123', 'USER', 'ACTIVE', 'admin', '15/02/26');
 
 -- --------------------------------------------------------
 
@@ -95,29 +96,8 @@ CREATE TABLE `tbllogs` (
 --
 
 INSERT INTO `tbllogs` (`datelog`, `timelog`, `action`, `module`, `performedby`, `performedto`) VALUES
-('07/10/2025', '8:06 pm', 'Clear all logs', 'Logs Managements', 'admin', 'N/A'),
-('21/01/2026', '09:08:48am', 'Update account', 'Accounts Management', 'JohnBenedict', 'JohnBenedict'),
-('21/01/2026', '09:09:08am', 'Update account', 'Accounts Management', 'JohnBenedict', 'JohnBenedict'),
-('21/01/2026', '09:26:32am', 'Delete account', 'Accounts Management', 'JohnBenedict', 'HEELO'),
-('23/01/2026', '09:23:22am', 'Update account', 'Accounts Management', 'JohnBenedict', 'testuser'),
-('23/01/2026', '09:24:15am', 'Delete account', 'Accounts Management', 'JohnBenedict', 'testuser'),
-('29/01/2026', '02:45:11pm', 'Update account', 'Accounts Management', 'JohnBenedict', 'test'),
-('29/01/2026', '02:47:30pm', 'Update account', 'Accounts Management', 'JohnBenedict', 'test'),
-('29/01/2026', '02:47:45pm', 'Delete account', 'Accounts Management', 'JohnBenedict', 'test'),
-('29/01/2026', '03:00:48pm', 'Update account', 'Accounts Management', 'JohnBenedict', 'testuser'),
-('29/01/2026', '03:01:30pm', 'Delete account', 'Accounts Management', 'JohnBenedict', 'testuser'),
-('31/01/2026', '08:14:46pm', 'Update account', 'Accounts Management', 'JohnBenedict', 'admin'),
-('31/01/2026', '08:29:00pm', 'Update account', 'Accounts Management', 'JohnBenedict', 'fa'),
-('31/01/2026', '08:29:06pm', 'Delete account', 'Accounts Management', 'JohnBenedict', 'fa'),
-('31/01/2026', '08:44:56pm', 'Update account', 'Accounts Management', 'JohnBenedict', 'tech'),
-('05/02/2026', '12:10:19pm', 'Update equipments', 'Equipments Managemen', 'admin', 'FAFA'),
-('05/02/2026', '12:15:14pm', 'Delete equipments', 'Equipments Managemen', 'admin', 'FAFA'),
-('05/02/2026', '12:15:20pm', 'Delete equipments', 'Equipments Managemen', 'admin', '34242'),
-('05/02/2026', '12:42:03pm', 'Update equipments', 'Equipments Managemen', 'JohnBenedict', 'ASSET323'),
-('05/02/2026', '12:43:21pm', 'Update equipments', 'Equipments Managemen', 'JohnBenedict', 'ASSET323'),
-('05/02/2026', '12:49:31pm', 'Delete equipments', 'Equipments Managemen', 'JohnBenedict', 'ASSET323'),
-('15/02/2026', '10:59:17am', 'Delete ticket', 'Ticketing Management', 'JohnBenedict', '20260215143025'),
-('15/02/2026', '10:59:25am', 'Delete ticket', 'Ticketing Management', 'JohnBenedict', '20260215105445');
+('15/02/2026', '10:36:48pm', 'Update ticket', 'Ticketing Management', 'JohnBenedict', '20260215223331'),
+('15/02/2026', '10:37:27pm', 'Delete ticket', 'Ticketing Management', 'JohnBenedict', '20260215223331');
 
 -- --------------------------------------------------------
 
@@ -144,11 +124,12 @@ CREATE TABLE `tbltickets` (
 --
 
 INSERT INTO `tbltickets` (`ticket_number`, `problem`, `details`, `status`, `created_by`, `date_created`, `assigned_to`, `date_assigned`, `date_completed`, `approved_by`, `date_approved`) VALUES
-('20260215105728', 'Hardware', 'Error PC', 'WORKING', 'JohnBenedict', '15/02/26', NULL, NULL, NULL, NULL, NULL),
-('20260215113053', 'Network', 'No wifi', 'WORKING', 'JohnBenedict', '15/02/26', NULL, NULL, NULL, NULL, NULL),
-('20260215113112', 'Software', 'Cant open chrome', 'WORKING', 'JohnBenedict', '15/02/26', NULL, NULL, NULL, NULL, NULL),
-('20260215113727', 'Hardware', 'Wire \r\n', 'WORKING', 'JohnBenedict', '15/02/26', NULL, NULL, NULL, NULL, NULL),
-('20260215113841', 'Software', 'Issue Problem photoshop\r\n', 'WORKING', 'JohnBenedict', '15/02/26', NULL, NULL, NULL, NULL, NULL);
+('20260215204038', 'Hardware', 'Error PC PH 206 cant open', 'PENDING', 'user', '02-15-26 20:40:38', NULL, NULL, NULL, NULL, NULL),
+('20260215204116', 'Connection', 'No internet connection PH 210', 'PENDING', 'user', '02-15-26 20:41:16', NULL, NULL, NULL, NULL, NULL),
+('20260215204206', 'Software', 'Error opening Xamp phpmyadmin', 'PENDING', 'user', '02-15-26 20:42:06', NULL, NULL, NULL, NULL, NULL),
+('20260215223358', 'Hardware', 'Error mouse cord PC 2 in PH 203', 'PENDING', 'JohnBenedict', '02-15-26 22:34:14', NULL, NULL, NULL, NULL, NULL),
+('20260215223422', 'Software', 'Error xampp software not opening in PC 5 in PH 210', 'PENDING', 'JohnBenedict', '02-15-26 22:34:54', NULL, NULL, NULL, NULL, NULL),
+('20260215223502', 'Connection', 'No internet connection for PC 16 in 205', 'PENDING', 'JohnBenedict', '02-15-26 22:35:37', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables

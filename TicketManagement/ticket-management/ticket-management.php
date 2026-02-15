@@ -86,15 +86,16 @@ include("../auth/session-checker.php");
                         echo "</tr>";
                         echo "</table>";
                     } else {
-                        echo "No record/s found.";
+                        echo "No ticket found.";
                     }
                 }
 
                 if (isset($_POST['btnsearch'])) {
-                    $sql = "SELECT * FROM tbltickets WHERE ticket_number LIKE ? OR problem LIKE ? OR status LIKE ? ORDER BY STR_TO_DATE(date_created, '%d/%m/%Y') DESC";
+
+                    $sql = "SELECT * FROM tbltickets WHERE created_by = ? AND (ticket_number LIKE ? OR problem LIKE ? OR status LIKE ?) ORDER BY date_created DESC";
                     if ($stmt = mysqli_prepare($link, $sql)) {
                         $searchvalue = '%' . $_POST['txtsearch'] . '%';
-                        mysqli_stmt_bind_param($stmt, "sss", $searchvalue, $searchvalue, $searchvalue,);
+                        mysqli_stmt_bind_param($stmt, "ssss", $_SESSION['username'], $searchvalue, $searchvalue, $searchvalue);
                         if (mysqli_stmt_execute($stmt)) {
                             $result = mysqli_stmt_get_result($stmt);
                             buildtable($result);
@@ -103,8 +104,9 @@ include("../auth/session-checker.php");
 
                 } else {
 
-                    $sql = "SELECT * FROM tbltickets ORDER BY STR_TO_DATE(date_created, '%d/%m/%Y') DESC";
+                    $sql = "SELECT * FROM tbltickets WHERE created_by = ?  ORDER BY date_created DESC";
                     if ($stmt = mysqli_prepare($link, $sql)) {
+                        mysqli_stmt_bind_param($stmt, "s", $_SESSION['username']);
                         if (mysqli_stmt_execute($stmt)) {
                             $result = mysqli_stmt_get_result($stmt);
                             buildtable($result);
@@ -112,6 +114,7 @@ include("../auth/session-checker.php");
                     }
                 }
                 ?>
+                 
             </div>
             </form>
 

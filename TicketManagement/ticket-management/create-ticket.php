@@ -2,16 +2,18 @@
 require_once("../config/config.php");
 include("../auth/session-checker.php");
 
-
-$ticket_number = date("YmdHis");
+if (!isset($_SESSION['ticket_number'])) {
+    $_SESSION['ticket_number'] = date("YmdHis");
+}
+$ticket_number = $_SESSION['ticket_number'];
 
 if (isset($_POST['btnadd'])) {
     $problem = $_POST['problem'];
     $details = $_POST['details'];
 
-    $status = "WORKING";
+    $status = "PENDING";
     $createdBy = $_SESSION['username'];
-    $date_created = date("d/m/y");
+    $date_created = date("m-d-y H:i:s");
     
     $sql = "INSERT INTO tbltickets (ticket_number, problem, details, status, created_by, date_created) VALUES (?, ?, ?, ?, ?, ?); ";
 
@@ -19,6 +21,7 @@ if (isset($_POST['btnadd'])) {
     mysqli_stmt_bind_param($stmt, "ssssss", $ticket_number, $problem, $details, $status, $createdBy, $date_created);
 
     if (mysqli_stmt_execute($stmt)) {
+            unset($_SESSION['ticket_number']);
             $_SESSION['message'] = [
                 'type' => 'success',
                 'text' => 'Successful created new ticket!'
@@ -28,7 +31,7 @@ if (isset($_POST['btnadd'])) {
     } else {
             $_SESSION['message'] = [
                 'type' => 'error',
-                'text' => 'Error creating new equipments!'
+                'text' => 'Error creating new ticket!'
             ];
     }
     
@@ -70,7 +73,7 @@ if (isset($_POST['btnadd'])) {
                                     <option value="" disabled selected>Select problem</option>
                                     <option value="Hardware">Hardware</option>
                                     <option value="Software">Software</option>
-                                    <option value="Network">Network</option>
+                                    <option value="Connection">Connection</option>
                                 </select>
                             </div>
                       

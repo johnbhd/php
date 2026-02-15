@@ -94,7 +94,7 @@ if (isset($_POST['btnupdate'])) {
                                 <select name="problem" required>
                                     <option value="Hardware" <?php if($data['problem'] == "Hardware") echo "selected"?>>Hardware</option>
                                     <option value="Software" <?php if($data['problem'] == "Software") echo "selected"?>>Software</option>
-                                    <option value="Network" <?php if($data['problem'] == "Network") echo "selected"?>>Network</option>
+                                    <option value="Connection" <?php if($data['problem'] == "Connection") echo "selected"?>>Connection</option>
                                 </select>
                             </div>
                       

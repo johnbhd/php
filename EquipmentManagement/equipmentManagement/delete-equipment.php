@@ -9,7 +9,7 @@ if (isset($_POST['btndelete'])) {
         mysqli_stmt_bind_param($stmt, "s", $id);
         mysqli_stmt_execute($stmt);
 
-        $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?);";
+        $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?)";
         $logsStmt = mysqli_prepare($link, $logs);
 
         $date = date("d/m/Y");
@@ -18,7 +18,7 @@ if (isset($_POST['btndelete'])) {
         $module = "Equipments Management";
         
         mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $id);
-        if (mysqli_execute($logsStmt)) {
+        if (mysqli_stmt_execute($logsStmt)) {
             $_SESSION['message'] = [
                 'type' => 'success',
                 'text' => 'Successfully deleted equipment #'.$id.'.'
@@ -97,7 +97,7 @@ form a {
             </div>
             <div>
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-                    <input type="hidden" name="delete_id" id="delete-id"">
+                    <input type="hidden" name="delete_id" id="delete-id">
                     <p>Are you sure you want to delete this equipment asset no. of <strong id="showId"></strong>?</p>
                     <div class="btnModal">
                         <input type="submit" name="btndelete" value="YES" id="yesBtn">
