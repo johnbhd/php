@@ -1,6 +1,6 @@
 <?php
 
-define('DB_SERVER', '127.0.0.1');
+define('DB_SERVER', '192.168.43.179:8080');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('DB_NAME', 'itc127-it2a-2026');
