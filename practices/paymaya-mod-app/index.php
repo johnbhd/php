@@ -1,6 +1,4 @@
-<!--<?php
-  require_once("./config.php")
-?>-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,11 +17,19 @@ body {
   background-image: url("./img/pc.jpg");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-color: #e3e3e3;
   height: 100vh;
+  background-size: 70%;
+}
+@media screen and (min-width: 769px) and (max-width: 1024px)  {
+  body {
+    background-size: 100%;
+    background-image: url("./img/pc.jpg");
+  }
 }
 @media screen and (max-width: 768px) {
   body {
+    background-size: cover;
     background-image: url("./img/mobile.jpg");
   }
 }
