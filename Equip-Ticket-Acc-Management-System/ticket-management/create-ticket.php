@@ -26,7 +26,14 @@ if (isset($_POST['btnadd'])) {
                 'type' => 'success',
                 'text' => 'Successful created new ticket!'
             ];
-            header("location: ./ticket-management.php");
+            if ($_SESSION['usertype'] == "ADMINISTRATOR") {
+                header("location: ./ticket-management-admin.php");
+            } else if ($_SESSION['usertype'] == "TECHNICAL") {
+                header("location: ./ticket-management-technical.php");
+            } else {
+                header("location: ./ticket-management-user.php");
+
+            }
             exit();
     } else {
             $_SESSION['message'] = [
