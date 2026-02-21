@@ -1,0 +1,69 @@
+
+/* notification for all*/
+.notification {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    color: white;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-width: 300px;
+        animation: slideIn 0.5s ease, fadeOut 0.5s ease 3s forwards;
+}
+
+.notification-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.noti-head {
+    display: flex;
+    align-items: center;
+
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #e2e6e3; 
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.noti-body {
+    padding-left: 34px; 
+}
+.notification.success {
+    background-color: #16a34a; 
+}
+
+.notification.error {
+    background-color: #f87171;
+}
+.errors {
+    color: #f87171;
+}
+.successful {
+    color: #16a34a; 
+}
+
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
