@@ -45,7 +45,7 @@ if (isset($_POST['btndelete'])) {
 
     <link rel="stylesheet" href="../assets/css/ticket-style/delete.css">
 
-    <div class="popup-overlay" id="popup-overlay"> 
+    <div class="popup-overlay" id="popup-delete"> 
         <div class="popup-field">
             <div>
                 <h4>Delete Ticket</h4>
@@ -56,7 +56,7 @@ if (isset($_POST['btndelete'])) {
                     <p>Are you sure you want to delete this ticket no. of <strong id="showId"></strong>?</p>
                     <div class="btnModal">
                         <input type="submit" name="btndelete" value="YES" id="yesBtn">
-                        <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" id="noBtn">NO</a>
+                        <button type="button" onclick="deleteClose()" id="noBtn">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -64,13 +64,13 @@ if (isset($_POST['btndelete'])) {
     </div>
 <script>
 function deleteModal(id) {
-    document.getElementById('popup-overlay').style.display = 'flex';
+    document.getElementById('popup-delete').style.display = 'flex';
     document.getElementById('delete-id').value = id;
     document.getElementById('showId').textContent = `#${id}`;
 }
 
-function closeModal() {
-    document.getElementById('popup-overlay').style.display = 'none';
+function deleteClose() {
+    document.getElementById('popup-delete').style.display = 'none';
 }
 
 </script>

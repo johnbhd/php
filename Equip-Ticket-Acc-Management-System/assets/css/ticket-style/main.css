@@ -153,24 +153,35 @@ tr:nth-child(odd) {
     color: white;
 }
 
-.actions .update,
-.actions .delete {
+.actions .assign,
+.actions .details,
+.actions .approve,
+.actions .delete 
+{
     padding: 8px;
     margin: 5px;
     border-radius: 15px;
     cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+}
+.actions .details {
+    background-color: #3B82F6; /* Blue */
 }
 
-.actions .update {
-    background-color: #3B82F6;
+.actions .assign {
+    background-color: #F59E0B; /* Orange */
+}
+
+.actions .approve {
+    background-color: #10B981; /* Green */
 }
 
 .actions .delete {
-    background-color: #EF4444;
-    font-size: 1rem;
-    border: none;
-    outline: none;
+    background-color: #EF4444; /* Red */
 }
+
 
 td.actions {
     border: none;

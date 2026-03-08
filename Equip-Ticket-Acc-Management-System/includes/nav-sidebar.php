@@ -136,6 +136,10 @@ main {
 
             <?php if ($_SESSION['usertype'] == 'ADMINISTRATOR') { ?>
                 
+                <a href="../ticket-management/ticket-management-admin.php">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Tickets</span>
+                </a>
                 <a href="../userManagement/accounts-management.php">
                     <i class="fa-regular fa-user"></i>    
                     <span>Accounts</span>
@@ -144,20 +148,16 @@ main {
                     <i class="fa-solid fa-computer"></i>
                     <span>Equipments</span>
                 </a>
-                <a href="../ticket-management/ticket-management-admin.php">
-                    <i class="fa-solid fa-ticket"></i>
-                    <span>Tickets</span>
-                </a>
             <?php } ?>
 
             <?php if ($_SESSION['usertype'] == 'TECHNICAL') { ?>
-                <a href="../equipmentManagement/equipment-management.php">
-                    <i class="fa-solid fa-computer"></i>
-                    <span>Equipments</span>
-                </a>
                 <a href="../ticket-management/ticket-management-technical.php">
                     <i class="fa-solid fa-ticket"></i>
                     <span>Tickets</span>
+                </a>
+                <a href="../equipmentManagement/equipment-management.php">
+                    <i class="fa-solid fa-computer"></i>
+                    <span>Equipments</span>
                 </a>
             <?php } ?>
 

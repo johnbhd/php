@@ -48,11 +48,6 @@ $_SESSION['title'] = "Ticketing Management System";
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
                             </div>
-                            <div class="create-div">
-                                <a href="./create-ticket.php" name="btncreate" class="create-btn">
-                                    <span style="margin-right: 5px; font-size: 1.4rem;">+</span><span class="mobile-block">Add Ticket</span> 
-                                </a>
-                            </div>
                         </div>
                     <div class="table-div">
                         <?php
@@ -69,12 +64,7 @@ $_SESSION['title'] = "Ticketing Management System";
                                     echo "<td>" . $row['date_created'] . "</td>";
                                     echo "<td>" . $row['status'] . "</td>";
                                     echo "<td class = 'actions'>";
-                                    echo "<a href = 'update-ticket.php?ticket_number=". $row['ticket_number']. "' class='update'>Update</a>";
-                                    echo "<button type='button'
-                                            onclick=\"deleteModal('".$row['ticket_number']."')\"
-                                            class='delete'>
-                                            Delete
-                                        </button>";
+                                    
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -120,7 +110,7 @@ $_SESSION['title'] = "Ticketing Management System";
             <?php include("../includes/footer.php")?>
         </div>
     </main>
-          <?php include("./delete-ticket.php");?>
+
 </body>
 
 </html>

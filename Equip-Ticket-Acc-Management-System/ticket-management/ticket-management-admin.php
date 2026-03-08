@@ -14,7 +14,7 @@ $_SESSION['title'] = "Ticketing Management System";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="shortcut icon" href="../assets/img/aulogo.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/notification.css">
-    <link rel="stylesheet" href="../assets/css/ticket-style/mains.css">
+    <link rel="stylesheet" href="../assets/css/ticket-style/main.css">
 </head>
 <body>
     <?php include("../includes/nav-sidebar.php");?>
@@ -47,11 +47,7 @@ $_SESSION['title'] = "Ticketing Management System";
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
                             </div>
-                            <div class="create-div">
-                                <a href="./create-ticket.php" name="btncreate" class="create-btn">
-                                    <span style="margin-right: 5px; font-size: 1.4rem;">+</span><span class="mobile-block">Add Ticket</span> 
-                                </a>
-                            </div>
+          
                         </div>
                     <div class="table-div">
                         <?php
@@ -65,10 +61,29 @@ $_SESSION['title'] = "Ticketing Management System";
                                     echo "<tr>";
                                     echo "<td>" . $row['ticket_number'] . "</td>";
                                     echo "<td>" . $row['problem'] . "</td>";
+                                    
                                     echo "<td>" . $row['date_created'] . "</td>";
                                     echo "<td>" . $row['status'] . "</td>";
                                     echo "<td class = 'actions'>";
-                                    echo "<a href = 'update-ticket.php?ticket_number=". $row['ticket_number']. "' class='update'>Update</a>";
+                                    
+                                    echo "<button type='button'
+                                            onclick=\"detailsModal('".$row['ticket_number']."')\"
+                                            class='details'>
+                                            Details
+                                        </button>";
+                                        
+                                    echo "<button type='button'
+                                            onclick=\"assignModal('".$row['ticket_number']."')\"
+                                            class='assign'>
+                                            Assign
+                                        </button>";
+                                        
+                                    echo "<button type='button'
+                                            onclick=\"approveModal('".$row['ticket_number']."')\"
+                                            class='approve'>
+                                            Approve
+                                        </button>";
+                                        
                                     echo "<button type='button'
                                             onclick=\"deleteModal('".$row['ticket_number']."')\"
                                             class='delete'>
@@ -90,10 +105,10 @@ $_SESSION['title'] = "Ticketing Management System";
 
                         if (isset($_POST['btnsearch'])) {
 
-                            $sql = "SELECT * FROM tbltickets WHERE created_by = ? AND (ticket_number LIKE ? OR problem LIKE ? OR status LIKE ?) ORDER BY date_created DESC";
+                            $sql = "SELECT * FROM tbltickets WHERE (ticket_number LIKE ? OR problem LIKE ? OR status LIKE ?) ORDER BY date_created DESC";
                             if ($stmt = mysqli_prepare($link, $sql)) {
                                 $searchvalue = '%' . $_POST['txtsearch'] . '%';
-                                mysqli_stmt_bind_param($stmt, "ssss", $_SESSION['username'], $searchvalue, $searchvalue, $searchvalue);
+                                mysqli_stmt_bind_param($stmt, "sss", $searchvalue, $searchvalue, $searchvalue);
                                 if (mysqli_stmt_execute($stmt)) {
                                     $result = mysqli_stmt_get_result($stmt);
                                     buildtable($result);
@@ -102,14 +117,14 @@ $_SESSION['title'] = "Ticketing Management System";
 
                         } else {
 
-                            $sql = "SELECT * FROM tbltickets WHERE created_by = ?  ORDER BY date_created DESC";
-                            if ($stmt = mysqli_prepare($link, $sql)) {
-                                mysqli_stmt_bind_param($stmt, "s", $_SESSION['username']);
+                            $sql = "SELECT * FROM tbltickets ORDER BY date_created DESC";
+                            $stmt = mysqli_prepare($link, $sql);
+                                
                                 if (mysqli_stmt_execute($stmt)) {
                                     $result = mysqli_stmt_get_result($stmt);
                                     buildtable($result);
                                 }
-                            }
+                            
                         }
                         ?>
                         
@@ -119,7 +134,10 @@ $_SESSION['title'] = "Ticketing Management System";
             <?php include("../includes/footer.php")?>
         </div>
     </main>
-          <?php include("./delete-ticket.php");?>
+          <?php include("./admin/details-ticket.php");?>
+          <?php include("./admin/approve-ticket.php");?>
+          <?php include("./admin/delete-ticket.php");?>
+          <?php include("./admin/assign-ticket.php");?>
 </body>
 
 </html>
