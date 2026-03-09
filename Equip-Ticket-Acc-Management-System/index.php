@@ -31,8 +31,8 @@ if (isset($_POST['btnsubmit'])) {
         if ($accounts['usertype'] == 'ADMINISTRATOR' ) {
             header("Location: ./ticket-management/ticket-management-admin.php");
             exit;
-        } else if ($accounts['usertype'] == 'TECHNICAL' || $accounts['usertype'] == 'USER') {
-            header("Location: ./equipmentManagement/equipment-management.php");
+        } else if ($accounts['usertype'] == 'TECHNICAL') {
+            header("Location: ./ticket-management/ticket-management-technical.php");
             exit;
         } else {
             header("Location: ./login.php");

@@ -1,3 +1,36 @@
+<?php
+
+$sql = "SELECT * FROM tblaccounts WHERE usertype = 'TECHNICAL' AND status = 'ACTIVE'";
+$stmt = mysqli_prepare($link, $sql);
+
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$row = mysqli_num_rows($result);
+
+if (isset($_POST['assignBtn'])) {
+  $assigned_id = $_POST['assign_id'];
+  $assigned_to = $_POST['assign_to'];
+  $date_assigned = date('Y-m-d H:i:s');
+  
+  $updateSql = "UPDATE tbltickets SET assigned_to = ?, date_assigned = ? WHERE ticket_number = ?";
+  $updateStmt = mysqli_prepare($link, $updateSql);
+  
+  mysqli_stmt_bind_param($updateStmt, "sss", $assigned_to, $date_assigned, $assigned_id);
+  mysqli_stmt_execute($updateStmt);
+  if(mysqli_stmt_execute($updateStmt)){
+    echo "<script>
+            alert('Ticket #$assigned_id assigned to $assigned_to successfully.');
+            document.getElementById('popup-assign').style.display='none';
+            window.location.reload();
+          </script>";
+} else {
+    echo "<script>alert('Failed to assign ticket.');</script>";
+}
+  
+}
+
+?>
+
 <style>
 .popup-overlay{
     position:fixed;
@@ -61,21 +94,28 @@
 
         <h4>Assign Ticket</h4>
 
-        <form action="#" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
 
             <input type="hidden" name="assign_id" id="assign-id">
 
             <p>Assign ticket <strong id="showAssignId"></strong> to technical:</p>
 
-            <select name="technical" required>
+            <select name="assign_to" required>
                 <option value="">Select Technical</option>
-                <option value="tech1">tech1</option>
-                <option value="tech2">tech2</option>
-                <option value="tech3">tech3</option>
+                <?php 
+                  if (mysqli_num_rows($result) > 0) {
+                    
+                    while ($data = mysqli_fetch_assoc($result)) {
+                      echo "<option value='". $data['username'] ."'>". $data['username'] ."</option>";
+                    }
+                  } else {
+                    echo "<option disabled>NO technical found.</option>";
+                  }
+                ?>
             </select>
 
             <div class="btnModal">
-                <input type="submit" value="Assign" id="assignBtn">
+                <button type="submit" name="assignBtn" id="assignBtn">Assign</button>
                 <button type="button" onclick="assignClose()" id="cancelBtn">Cancel</button>
             </div>
 

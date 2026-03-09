@@ -1,6 +1,4 @@
-<?php
 
-?>
 <style>
 .popup-overlay{
     position:fixed;
@@ -64,12 +62,20 @@
 
         <div class="details-content">
             <p><strong>Ticket Number:</strong> <span id="show-id"></span></p>
-            <p><strong>Problem:</strong> <span id="ticketProblem">Monitor not working</span></p>
-            <p><strong>Description:</strong> <span id="ticketDescription">The monitor does not power on.</span></p>
-            <p><strong>Status:</strong> <span id="ticketStatus">NEW</span></p>
-            <p><strong>Date:</strong> <span id="ticketDate">2026-03-08</span></p>
-            <p><strong>Time:</strong> <span id="ticketTime">10:30 AM</span></p>
-
+            <p><strong>Problem:</strong> <span id="ticketProblem"></span></p>
+            <p><strong>Description:</strong> <span id="ticketDescription"></span></p>
+            <p><strong>Status:</strong> <span id="ticketStatus"></span></p>
+            
+            <p><strong>Time:</strong> <span id="ticketTime"></span></p>
+            
+            <p><strong>Assigned To:</strong> <span id="ticketAssigned"></span></p>
+            <p><strong>Date Assigned:</strong> <span id="ticketDateAssigned"></span></p>
+            
+            <p><strong>Date Completed:</strong> <span id="ticketDateCompleted"></span></p>
+            
+            <p><strong>Date Approved:</strong> <span id="ticketDateApproved"></span></p>
+            <p><strong>Approved By:</strong> <span id="ticketApprovedBy"></span></p>
+            
             <div class="btnModal">
                 <button onclick="detailsClose()" id="closeBtn">Close</button>
             </div>
@@ -78,9 +84,26 @@
 </div>
 <script>
 function detailsModal(id) {
+
     document.getElementById('popup-details').style.display = 'flex';
     document.getElementById('show-id').textContent = id;
-    document.getElementById('showId').textContent = `#${id}`;
+
+    fetch("admin/get-ticket.php?ticket_number=" + id)
+    .then(res => res.json())
+    .then(data => {
+
+        document.getElementById("ticketProblem").textContent = data.problem || "-";
+        document.getElementById("ticketDescription").textContent = data.details || "-";
+        document.getElementById("ticketStatus").textContent = data.status|| "-";
+        document.getElementById("ticketTime").textContent = data.date_created || "-";
+        
+        document.getElementById("ticketAssigned").textContent = data.assigned_to || "-";
+        document.getElementById("ticketDateAssigned").textContent = data.date_assigned || "-";
+        document.getElementById("ticketDateCompleted").textContent = data.date_completed || "-";
+        document.getElementById("ticketDateApproved").textContent = data.date_approved || "-";
+        document.getElementById("ticketApprovedBy").textContent = data.approved_by || "-";
+    });
+
 }
 
 function detailsClose() {

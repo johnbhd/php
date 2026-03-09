@@ -81,7 +81,7 @@ $_SESSION['title'] = "Ticketing Management System";
 
                         if (isset($_POST['btnsearch'])) {
 
-                            $sql = "SELECT * FROM tbltickets WHERE created_by = ? AND (ticket_number LIKE ? OR problem LIKE ? OR status LIKE ?) ORDER BY date_created DESC";
+                            $sql = "SELECT * FROM tbltickets WHERE assigned_to = ? AND (ticket_number LIKE ? OR problem LIKE ? OR status LIKE ?) ORDER BY date_created DESC";
                             if ($stmt = mysqli_prepare($link, $sql)) {
                                 $searchvalue = '%' . $_POST['txtsearch'] . '%';
                                 mysqli_stmt_bind_param($stmt, "ssss", $_SESSION['username'], $searchvalue, $searchvalue, $searchvalue);
@@ -93,7 +93,7 @@ $_SESSION['title'] = "Ticketing Management System";
 
                         } else {
 
-                            $sql = "SELECT * FROM tbltickets WHERE created_by = ?  ORDER BY date_created DESC";
+                            $sql = "SELECT * FROM tbltickets WHERE assigned_to = ?  ORDER BY date_assigned DESC";
                             if ($stmt = mysqli_prepare($link, $sql)) {
                                 mysqli_stmt_bind_param($stmt, "s", $_SESSION['username']);
                                 if (mysqli_stmt_execute($stmt)) {
