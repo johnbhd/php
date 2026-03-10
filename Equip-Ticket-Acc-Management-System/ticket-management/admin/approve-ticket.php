@@ -1,3 +1,49 @@
+<?php
+
+if (isset($_POST['approveBtn'])) {
+    $ticket_number = $_POST['approve_id'];
+    $approve_by = $_SESSION['username'];
+    $date_approved = date("Y-m-d H:i:s");
+    $status = "CLOSED";
+
+    $sql = "UPDATE tbltickets SET approved_by = ?, date_approved = ?, status = ? WHERE ticket_number = ?";
+    $stmt = mysqli_prepare($link, $sql);
+
+    mysqli_stmt_bind_param($stmt, "ssss", $approve_by, $date_approved, $status, $ticket_number);
+    
+    $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?)";
+    $logsStmt = mysqli_prepare($link, $logs);
+
+    $date = date("d/m/Y");
+    $time = date("h:i:sa");
+    $action = "Approved ticket";
+    $module = "Ticket Management";
+        
+    mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $ticket_number);
+
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_execute($logsStmt);
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => 'Successful approving this ticket #' . $ticket_number . "!"
+        ];
+        echo "<script>
+                window.location.href = '{$_SERVER['PHP_SELF']}';
+        </script>";
+        exit;
+        
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Error approving this ticket #' . $ticket_number . "!"
+        ];
+    }
+}
+
+
+
+?>
+
 <style>
 .popup-overlay{
     position:fixed;
@@ -55,7 +101,7 @@
 
         <h4>Approve Ticket</h4>
 
-        <form action="#" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST">
 
             <input type="hidden" name="approve_id" id="approve-id">
 
@@ -65,8 +111,8 @@
             </p>
 
             <div class="btnModal">
-                <input type="submit" value="YES" id="approveBtn">
-                <button type="button" onclick="approveClose()" id="cancelBtn">NO</button>
+                <button type="submit" name="approveBtn" id="assignBtn">Yes</button>
+                <button type="button" onclick="approveClose()" id="cancelBtn">No</button>
             </div>
 
         </form>

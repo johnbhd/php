@@ -145,7 +145,7 @@ tr:nth-child(odd) {
 
 .actions {
     display: flex;
-    justify-content: center;
+    justify-content: none;
 }
 
 .actions a, .actions button {

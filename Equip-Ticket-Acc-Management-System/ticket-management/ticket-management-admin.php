@@ -14,7 +14,7 @@ $_SESSION['title'] = "Ticketing Management System";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="shortcut icon" href="../assets/img/aulogo.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/notification.css">
-    <link rel="stylesheet" href="../assets/css/ticket-style/main.css">
+    <link rel="stylesheet" href="../assets/css/ticket-style/mains.css">
 </head>
 <body>
     <?php include("../includes/nav-sidebar.php");?>
@@ -71,13 +71,15 @@ $_SESSION['title'] = "Ticketing Management System";
                                             class='details'>
                                             Details
                                         </button>";
-                                        
-                                    echo "<button type='button'
-                                            onclick=\"assignModal('".$row['ticket_number']."')\"
-                                            class='assign'>
-                                            Assign
-                                        </button>";
-                                        
+                                    
+                                    if ($row['status'] == "PENDING") {
+                                        echo "<button type='button'
+                                                onclick=\"assignModal('".$row['ticket_number']."')\"
+                                                class='assign'>
+                                                Assign
+                                            </button>";
+                                    }
+                                    if ($row['status'] == "FOR APPROVAL")
                                     echo "<button type='button'
                                             onclick=\"approveModal('".$row['ticket_number']."')\"
                                             class='approve'>

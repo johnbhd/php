@@ -17,6 +17,12 @@ $_SESSION['title'] = "Ticketing Management System";
     <link rel="stylesheet" href="../assets/css/notification.css">
     <link rel="stylesheet" href="../assets/css/ticket-style/mains.css">
 </head>
+<style>
+    .actions {
+        justify-content: center;
+    }
+
+</style>
 <body>
     <?php include("../includes/nav-sidebar.php");?>
         <div class="container">
@@ -63,9 +69,17 @@ $_SESSION['title'] = "Ticketing Management System";
                                     echo "<td>" . $row['problem'] . "</td>";
                                     echo "<td>" . $row['date_created'] . "</td>";
                                     echo "<td>" . $row['status'] . "</td>";
-                                    echo "<td class = 'actions'>";
-                                    
-                                    echo "</td>";
+                                    if ($row['status'] == "FOR APPROVAL") {
+                                        echo "<td>----</td>";
+                                    } else {
+                                        echo "<td class = 'actions'>";
+                                        echo "<button type='button'
+                                        onclick=\"completeModal('".$row['ticket_number']."')\"
+                                        class='details'>
+                                            Complete
+                                        </button>";
+                                        echo "</td>";
+                                    }
                                     echo "</tr>";
                                 }
                                 echo "<tr class='countTotal'>";
@@ -110,7 +124,7 @@ $_SESSION['title'] = "Ticketing Management System";
             <?php include("../includes/footer.php")?>
         </div>
     </main>
-
+            <?php include("./tech/complete-ticket.php");?>        
 </body>
 
 </html>

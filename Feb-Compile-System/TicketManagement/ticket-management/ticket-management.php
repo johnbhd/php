@@ -14,7 +14,7 @@ include("../auth/session-checker.php");
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="shortcut icon" href="../assets/img/aulogo.png" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/notification.css">
-    <link rel="stylesheet" href="../assets/css/ticket-style/main.css">
+    <link rel="stylesheet" href="../assets/css/ticket-style/mains.css">
 </head>
 <body>
     <?php include("../includes/nav-sidebar.php");?>

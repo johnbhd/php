@@ -17,6 +17,12 @@ $_SESSION['title'] = "Ticketing Management System";
     <link rel="stylesheet" href="../assets/css/notification.css">
     <link rel="stylesheet" href="../assets/css/ticket-style/mains.css">
 </head>
+<style>
+    .actions {
+        justify-content: center;
+    }
+
+</style>
 <body>
     <?php include("../includes/nav-sidebar.php");?>
         <div class="container">
@@ -69,13 +75,19 @@ $_SESSION['title'] = "Ticketing Management System";
                                     echo "<td>" . $row['date_created'] . "</td>";
                                     echo "<td>" . $row['status'] . "</td>";
                                     echo "<td class = 'actions'>";
-                                    echo "<a href = 'update-ticket.php?ticket_number=". $row['ticket_number']. "' class='update'>Update</a>";
-                                    echo "<button type='button'
+                                    
+                                    if ($row['status'] == "PENDING") {
+                                        echo "<button type='button'
                                             onclick=\"deleteModal('".$row['ticket_number']."')\"
                                             class='delete'>
                                             Delete
                                         </button>";
+                                        
+                                    } else {
+                                        echo "----";
+                                    }
                                     echo "</td>";
+                                   
                                     echo "</tr>";
                                 }
                                 echo "<tr class='countTotal'>";

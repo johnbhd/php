@@ -11,21 +11,42 @@ if (isset($_POST['assignBtn'])) {
   $assigned_id = $_POST['assign_id'];
   $assigned_to = $_POST['assign_to'];
   $date_assigned = date('Y-m-d H:i:s');
+  $status = "ON-GOING";
   
-  $updateSql = "UPDATE tbltickets SET assigned_to = ?, date_assigned = ? WHERE ticket_number = ?";
+  $updateSql = "UPDATE tbltickets SET assigned_to = ?, date_assigned = ?, status = ? WHERE ticket_number = ?";
   $updateStmt = mysqli_prepare($link, $updateSql);
   
-  mysqli_stmt_bind_param($updateStmt, "sss", $assigned_to, $date_assigned, $assigned_id);
+  mysqli_stmt_bind_param($updateStmt, "ssss", $assigned_to, $date_assigned, $status, $assigned_id);
   mysqli_stmt_execute($updateStmt);
+
+    $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?)";
+    $logsStmt = mysqli_prepare($link, $logs);
+
+    $date = date("d/m/Y");
+    $time = date("h:i:sa");
+    $action = "Assign ticket";
+    $module = "Ticket Management";
+    
+    mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $assigned_to);
+
   if(mysqli_stmt_execute($updateStmt)){
-    echo "<script>
-            alert('Ticket #$assigned_id assigned to $assigned_to successfully.');
-            document.getElementById('popup-assign').style.display='none';
-            window.location.reload();
-          </script>";
-} else {
-    echo "<script>alert('Failed to assign ticket.');</script>";
-}
+        mysqli_stmt_execute($logsStmt);
+
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => 'Successful assign this ticket #' . $assigned_id . "!"
+        ];
+        echo "<script>
+                window.location.href = '{$_SERVER['PHP_SELF']}';
+        </script>";
+        exit;
+        
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Error assigning this ticket #' . $assigned_id . "!"
+        ];
+    }
   
 }
 
