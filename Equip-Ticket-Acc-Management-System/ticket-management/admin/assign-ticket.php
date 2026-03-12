@@ -27,7 +27,7 @@ if (isset($_POST['assignBtn'])) {
     $action = "Assign ticket";
     $module = "Ticket Management";
     
-    mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $assigned_to);
+    mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $assigned_id);
 
   if(mysqli_stmt_execute($updateStmt)){
         mysqli_stmt_execute($logsStmt);

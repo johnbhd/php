@@ -78,6 +78,11 @@ $_SESSION['title'] = "Ticketing Management System";
                                     
                                     if ($row['status'] == "PENDING") {
                                         echo "<button type='button'
+                                            onclick=\"updateModal('".$row['ticket_number']."')\"
+                                            class='details'>
+                                            Update
+                                        </button>";
+                                          echo "<button type='button'
                                             onclick=\"deleteModal('".$row['ticket_number']."')\"
                                             class='delete'>
                                             Delete
@@ -132,7 +137,8 @@ $_SESSION['title'] = "Ticketing Management System";
             <?php include("../includes/footer.php")?>
         </div>
     </main>
-          <?php include("./delete-ticket.php");?>
+          <?php include("./user/delete-ticket.php");?>
+          <?php include("./user/update-ticket.php");?>
 </body>
 
 </html>
