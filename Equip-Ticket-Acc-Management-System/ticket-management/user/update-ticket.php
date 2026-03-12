@@ -1,48 +1,65 @@
 <?php
 
 if (isset($_POST['updateBtn'])) {
+
     $ticket_number = $_POST['update_id'];
     $problem = $_POST['problem'];
     $details = $_POST['details'];
 
+    $statusCheck = "SELECT status FROM tbltickets WHERE ticket_number = ?";
+    $stmtCheck = mysqli_prepare($link, $statusCheck);
+    mysqli_stmt_bind_param($stmtCheck, "s", $ticket_number);
+    mysqli_stmt_execute($stmtCheck);
+    $resultCheck = mysqli_stmt_get_result($stmtCheck);
+    $rowCheck = mysqli_fetch_assoc($resultCheck);
+
+    if ($rowCheck['status'] !== "PENDING") {
+
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'You cannot update this ticket because its status is ' . $rowCheck['status']
+        ];
+
+        echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
+        exit;
+    }
+
     $sql = "UPDATE tbltickets SET problem = ?, details = ? WHERE ticket_number = ?";
     $stmt = mysqli_prepare($link, $sql);
-
     mysqli_stmt_bind_param($stmt, "sss", $problem, $details, $ticket_number);
-    
-    $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto) VALUES (?,?,?,?,?,?)";
+
+
+    $logs = "INSERT INTO tbllogs (datelog, timelog, action, module, performedby, performedto)
+             VALUES (?,?,?,?,?,?)";
     $logsStmt = mysqli_prepare($link, $logs);
 
     $date = date("d/m/Y");
     $time = date("h:i:sa");
     $action = "Update ticket";
     $module = "Ticket Management";
-    
+
     mysqli_stmt_bind_param($logsStmt, "ssssss", $date, $time, $action, $module, $_SESSION["username"], $ticket_number);
 
     if (mysqli_stmt_execute($stmt)) {
-      mysqli_stmt_execute($logsStmt);
+
+        mysqli_stmt_execute($logsStmt);
 
         $_SESSION['message'] = [
             'type' => 'success',
-            'text' => 'Successful update this ticket #' . $ticket_number . "!"
+            'text' => 'Successfully updated ticket #' . $ticket_number . "!"
         ];
-        echo "<script>
-                window.location.href = '{$_SERVER['PHP_SELF']}';
-        </script>";
+
+        echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
         exit;
-        
+
     } else {
+
         $_SESSION['message'] = [
             'type' => 'error',
-            'text' => 'Error updating this ticket #' . $ticket_number . "!"
+            'text' => 'Error updating ticket #' . $ticket_number . "!"
         ];
     }
-
-    
 }
-
-
 ?>
 
 <style>
@@ -208,8 +225,6 @@ if (isset($_POST['updateBtn'])) {
 function updateModal(id) {
     document.getElementById('popup-update').style.display = 'flex';
     document.getElementById('update-id').value = id;
-
-
 
     fetch("./user/get-ticket.php?ticket_number=" + id)
     .then(res => res.json())

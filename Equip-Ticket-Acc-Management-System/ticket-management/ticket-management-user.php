@@ -4,6 +4,9 @@ include("../auth/session-checker.php");
 checkRoles(['USER']);
 
 $_SESSION['title'] = "Ticketing Management System";
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -28,14 +31,14 @@ $_SESSION['title'] = "Ticketing Management System";
         <div class="container">
             <div class="wrapper"> 
                 <?php 
-                if (isset($_SESSION['message']) && $_SESSION['message']['type'] == 'success'): 
+                if (isset($_SESSION['message'])):
                     $type = $_SESSION['message']['type']; 
                     $text = $_SESSION['message']['text'];
                 ?>
                 <div class="notification <?php echo $type; ?>">
                     <div class="notification-body">
                         <div class="noti-head">
-                            <i class="fa-solid fa-check icon successful"></i>
+                            <i class="fa-solid <?php echo $type == 'success' ? 'fa-check icon successful' : 'fa-xmark icon errors'; ?>"></i>
                             <h4><?php echo ucfirst($type); ?></h4>
                         </div>
                         <div class="noti-body">
@@ -60,50 +63,46 @@ $_SESSION['title'] = "Ticketing Management System";
                                 </a>
                             </div>
                         </div>
-                    <div class="table-div">
-                        <?php
-                        function buildtable($result) {
-                            if (mysqli_num_rows($result) > 0) {
-                                echo "<table>";
-                                echo "<tr>";
-                                echo "<th>Ticket No.</th><th>Problem</th><th>Date Created</th><th>Status</th><th>Actions</th>";
-                                echo "</tr>";
-                                while ($row = mysqli_fetch_array($result)) {
+                        <div class="table-div">
+                            <?php
+                            function buildtable($result) {
+                                if (mysqli_num_rows($result) > 0) {
+                                    echo "<table>";
                                     echo "<tr>";
-                                    echo "<td>" . $row['ticket_number'] . "</td>";
-                                    echo "<td>" . $row['problem'] . "</td>";
-                                    echo "<td>" . $row['date_created'] . "</td>";
-                                    echo "<td>" . $row['status'] . "</td>";
-                                    echo "<td class = 'actions'>";
-                                    
-                                    if ($row['status'] == "PENDING") {
+                                    echo "<th>Ticket No.</th><th>Problem</th><th>Date Created</th><th>Status</th><th>Actions</th>";
+                                    echo "</tr>";
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row['ticket_number'] . "</td>";
+                                        echo "<td>" . $row['problem'] . "</td>";
+                                        echo "<td>" . $row['date_created'] . "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
+                                        echo "<td class = 'actions'>";
+                                        
                                         echo "<button type='button'
+                                            name='thisUpdate'
                                             onclick=\"updateModal('".$row['ticket_number']."')\"
                                             class='details'>
                                             Update
                                         </button>";
-                                          echo "<button type='button'
+                                            echo "<button type='button'
                                             onclick=\"deleteModal('".$row['ticket_number']."')\"
                                             class='delete'>
                                             Delete
                                         </button>";
-                                        
-                                    } else {
-                                        echo "----";
+                                        echo "</td>";
+                                    
+                                        echo "</tr>";
                                     }
-                                    echo "</td>";
-                                   
+                                    echo "<tr class='countTotal'>";
+                                    echo "<td>Total of Ticket</td>";
+                                    echo "<td colspan='3'></td>";
+                                    echo "<td>". mysqli_num_rows($result)."</td>";
                                     echo "</tr>";
+                                    echo "</table>";
+                                } else {
+                                    echo "No ticket found.";
                                 }
-                                echo "<tr class='countTotal'>";
-                                echo "<td>Total of Ticket</td>";
-                                echo "<td colspan='3'></td>";
-                                echo "<td>". mysqli_num_rows($result)."</td>";
-                                echo "</tr>";
-                                echo "</table>";
-                            } else {
-                                echo "No ticket found.";
-                            }
                         }
 
                         if (isset($_POST['btnsearch'])) {
@@ -140,5 +139,7 @@ $_SESSION['title'] = "Ticketing Management System";
           <?php include("./user/delete-ticket.php");?>
           <?php include("./user/update-ticket.php");?>
 </body>
-
+<script>
+    
+</script>
 </html>

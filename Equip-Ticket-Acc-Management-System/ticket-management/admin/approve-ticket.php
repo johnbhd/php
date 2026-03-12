@@ -4,8 +4,26 @@ if (isset($_POST['approveBtn'])) {
     $ticket_number = $_POST['approve_id'];
     $approve_by = $_SESSION['username'];
     $date_approved = date("Y-m-d H:i:s");
-    $status = "CLOSED";
+    $status = "COMPLETED";
+    
+    $statusCheck = "SELECT status FROM tbltickets WHERE ticket_number = ?";
+        $stmtCheck = mysqli_prepare($link, $statusCheck);
+        mysqli_stmt_bind_param($stmtCheck, "s",  $ticket_number);
+        mysqli_stmt_execute($stmtCheck);
+        $resultCheck = mysqli_stmt_get_result($stmtCheck);
+        $rowCheck = mysqli_fetch_assoc($resultCheck);
 
+        if ($rowCheck['status'] == "ON-GOING" || $rowCheck['status'] == "COMPLETED" || $rowCheck['status'] == "PENDING") {
+
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'You cannot approve this ticket because its status is ' . $rowCheck['status']
+            ];
+
+            echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
+            exit;
+        }
+  
     $sql = "UPDATE tbltickets SET approved_by = ?, date_approved = ?, status = ? WHERE ticket_number = ?";
     $stmt = mysqli_prepare($link, $sql);
 

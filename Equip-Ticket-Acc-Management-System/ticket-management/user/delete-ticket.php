@@ -3,6 +3,24 @@
 if (isset($_POST['btndelete'])) {
     $id = $_POST['delete_id'];
 
+    $statusCheck = "SELECT status FROM tbltickets WHERE ticket_number = ?";
+        $stmtCheck = mysqli_prepare($link, $statusCheck);
+        mysqli_stmt_bind_param($stmtCheck, "s", $id);
+        mysqli_stmt_execute($stmtCheck);
+        $resultCheck = mysqli_stmt_get_result($stmtCheck);
+        $rowCheck = mysqli_fetch_assoc($resultCheck);
+
+        if ($rowCheck['status'] !== "PENDING") {
+
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'You cannot delete this ticket because its status is ' . $rowCheck['status']
+            ];
+
+            echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
+            exit;
+        }
+
     $sql = "DELETE FROM tbltickets WHERE ticket_number = ?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {

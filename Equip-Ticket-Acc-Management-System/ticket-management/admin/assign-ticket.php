@@ -8,10 +8,28 @@ $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_num_rows($result);
 
 if (isset($_POST['assignBtn'])) {
-  $assigned_id = $_POST['assign_id'];
-  $assigned_to = $_POST['assign_to'];
-  $date_assigned = date('Y-m-d H:i:s');
-  $status = "ON-GOING";
+    $assigned_id = $_POST['assign_id'];
+    $assigned_to = $_POST['assign_to'];
+    $date_assigned = date('Y-m-d H:i:s');
+    $status = "ON-GOING";
+
+    $statusCheck = "SELECT status FROM tbltickets WHERE ticket_number = ?";
+        $stmtCheck = mysqli_prepare($link, $statusCheck);
+        mysqli_stmt_bind_param($stmtCheck, "s",  $assigned_id);
+        mysqli_stmt_execute($stmtCheck);
+        $resultCheck = mysqli_stmt_get_result($stmtCheck);
+        $rowCheck = mysqli_fetch_assoc($resultCheck);
+
+        if ($rowCheck['status'] !== "PENDING") {
+
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'You cannot assign this ticket because its status is ' . $rowCheck['status']
+            ];
+
+            echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
+            exit;
+        }
   
   $updateSql = "UPDATE tbltickets SET assigned_to = ?, date_assigned = ?, status = ? WHERE ticket_number = ?";
   $updateStmt = mysqli_prepare($link, $updateSql);

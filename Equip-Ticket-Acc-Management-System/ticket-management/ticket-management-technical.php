@@ -27,15 +27,15 @@ $_SESSION['title'] = "Ticketing Management System";
     <?php include("../includes/nav-sidebar.php");?>
         <div class="container">
             <div class="wrapper"> 
-                <?php 
-                if (isset($_SESSION['message']) && $_SESSION['message']['type'] == 'success'): 
+               <?php 
+                if (isset($_SESSION['message'])):
                     $type = $_SESSION['message']['type']; 
                     $text = $_SESSION['message']['text'];
                 ?>
                 <div class="notification <?php echo $type; ?>">
                     <div class="notification-body">
                         <div class="noti-head">
-                            <i class="fa-solid fa-check icon successful"></i>
+                            <i class="fa-solid <?php echo $type == 'success' ? 'fa-check icon successful' : 'fa-xmark icon errors'; ?>"></i>
                             <h4><?php echo ucfirst($type); ?></h4>
                         </div>
                         <div class="noti-body">
@@ -69,9 +69,7 @@ $_SESSION['title'] = "Ticketing Management System";
                                     echo "<td>" . $row['problem'] . "</td>";
                                     echo "<td>" . $row['date_created'] . "</td>";
                                     echo "<td>" . $row['status'] . "</td>";
-                                    if ($row['status'] == "FOR APPROVAL") {
-                                        echo "<td>----</td>";
-                                    } else {
+                            
                                         echo "<td class = 'actions'>";
                                         echo "<button type='button'
                                         onclick=\"completeModal('".$row['ticket_number']."')\"
@@ -79,7 +77,7 @@ $_SESSION['title'] = "Ticketing Management System";
                                             Complete
                                         </button>";
                                         echo "</td>";
-                                    }
+                                    
                                     echo "</tr>";
                                 }
                                 echo "<tr class='countTotal'>";
