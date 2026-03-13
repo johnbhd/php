@@ -119,7 +119,7 @@ main {
                 </div>
             
             <?php } else {
-                    header('location: ../login.php');
+                    header('location: ../index.php');
                 }
             ?>
         </div>
@@ -162,13 +162,13 @@ main {
             <?php } ?>
 
             <?php if ($_SESSION['usertype'] == 'USER') { ?>
-                <a href="../equipmentManagement/equipment-management.php">
-                    <i class="fa-solid fa-computer"></i>
-                    <span>Equipments</span>
-                </a>
                 <a href="../ticket-management/ticket-management-user.php">
                     <i class="fa-solid fa-ticket"></i>
                     <span>Tickets</span>
+                </a>
+                <a href="../equipmentManagement/equipment-management.php">
+                    <i class="fa-solid fa-computer"></i>
+                    <span>Equipments</span>
                 </a>
             <?php } ?>
 

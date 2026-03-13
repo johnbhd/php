@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 15, 2026 at 03:53 PM
+-- Generation Time: Mar 13, 2026 at 04:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `itc127-it2a-2026`
+-- Database: `itc127_it2a_2026`
 --
 
 -- --------------------------------------------------------
@@ -43,7 +43,9 @@ CREATE TABLE `tblaccounts` (
 INSERT INTO `tblaccounts` (`username`, `password`, `usertype`, `status`, `createdby`, `datecreated`) VALUES
 ('admin', 'admin123', 'ADMINISTRATOR', 'ACTIVE', 'admin', '14/01/26'),
 ('JohnBenedict', 'Villegas', 'USER', 'ACTIVE', 'admin', '16/01/26'),
-('tech', 'tech123', 'TECHNICAL', 'ACTIVE', 'admin', '14/01/26'),
+('tech1', 'tech123', 'TECHNICAL', 'ACTIVE', 'admin', '14/01/26'),
+('tech2', 'tech123', 'TECHNICAL', 'ACTIVE', 'admin', '10/03/26'),
+('tech3', 'TECH123', 'TECHNICAL', 'ACTIVE', 'admin', '10/03/26'),
 ('user', 'user123', 'USER', 'ACTIVE', 'admin', '15/02/26');
 
 -- --------------------------------------------------------
@@ -96,8 +98,24 @@ CREATE TABLE `tbllogs` (
 --
 
 INSERT INTO `tbllogs` (`datelog`, `timelog`, `action`, `module`, `performedby`, `performedto`) VALUES
-('15/02/2026', '10:36:48pm', 'Update ticket', 'Ticketing Management', 'JohnBenedict', '20260215223331'),
-('15/02/2026', '10:37:27pm', 'Delete ticket', 'Ticketing Management', 'JohnBenedict', '20260215223331');
+('13/03/2026', '10:58:20am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105742'),
+('13/03/2026', '10:58:28am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105729'),
+('13/03/2026', '10:58:35am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105720'),
+('13/03/2026', '10:58:44am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105712'),
+('13/03/2026', '10:58:53am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105705'),
+('13/03/2026', '10:58:57am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105654'),
+('13/03/2026', '10:59:16am', 'Completed ticket ', 'Ticket Management', 'tech1', '20260313105742'),
+('13/03/2026', '10:59:43am', 'Completed ticket ', 'Ticket Management', 'tech2', '20260313105654'),
+('13/03/2026', '10:59:46am', 'Completed ticket ', 'Ticket Management', 'tech2', '20260313105712'),
+('13/03/2026', '10:59:47am', 'Completed ticket ', 'Ticket Management', 'tech2', '20260313105720'),
+('13/03/2026', '11:00:05am', 'Approved ticket', 'Ticket Management', 'admin', '20260313105654'),
+('13/03/2026', '11:00:08am', 'Approved ticket', 'Ticket Management', 'admin', '20260313105712'),
+('13/03/2026', '11:01:19am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105729'),
+('13/03/2026', '11:01:24am', 'Assign ticket', 'Ticket Management', 'admin', '20260313105759'),
+('13/03/2026', '11:02:10am', 'Approved ticket', 'Ticket Management', 'admin', '20260313105720'),
+('13/03/2026', '11:02:52am', 'Completed ticket ', 'Ticket Management', 'tech1', '20260313105729'),
+('13/03/2026', '11:04:54am', 'Update ticket', 'Ticket Management', 'JohnBenedict', '20260313105749'),
+('13/03/2026', '11:05:20am', 'Delete ticket', 'Ticketing Management', 'JohnBenedict', '20260313105749');
 
 -- --------------------------------------------------------
 
@@ -124,12 +142,13 @@ CREATE TABLE `tbltickets` (
 --
 
 INSERT INTO `tbltickets` (`ticket_number`, `problem`, `details`, `status`, `created_by`, `date_created`, `assigned_to`, `date_assigned`, `date_completed`, `approved_by`, `date_approved`) VALUES
-('20260215204038', 'Hardware', 'Error PC PH 206 cant open', 'PENDING', 'user', '02-15-26 20:40:38', NULL, NULL, NULL, NULL, NULL),
-('20260215204116', 'Connection', 'No internet connection PH 210', 'PENDING', 'user', '02-15-26 20:41:16', NULL, NULL, NULL, NULL, NULL),
-('20260215204206', 'Software', 'Error opening Xamp phpmyadmin', 'PENDING', 'user', '02-15-26 20:42:06', NULL, NULL, NULL, NULL, NULL),
-('20260215223358', 'Hardware', 'Error mouse cord PC 2 in PH 203', 'PENDING', 'JohnBenedict', '02-15-26 22:34:14', NULL, NULL, NULL, NULL, NULL),
-('20260215223422', 'Software', 'Error xampp software not opening in PC 5 in PH 210', 'PENDING', 'JohnBenedict', '02-15-26 22:34:54', NULL, NULL, NULL, NULL, NULL),
-('20260215223502', 'Connection', 'No internet connection for PC 16 in 205', 'PENDING', 'JohnBenedict', '02-15-26 22:35:37', NULL, NULL, NULL, NULL, NULL);
+('20260313105654', 'Hardware', 'problem 1 Hardware', 'COMPLETED', 'JohnBenedict', '03-13-26 10:57:04', 'tech2', '2026-03-13 10:58:57', '2026-03-13 10:59:43', 'admin', '2026-03-13 11:00:05'),
+('20260313105705', 'Hardware', 'problem 2 Hardware', 'ON-GOING', 'JohnBenedict', '03-13-26 10:57:11', 'tech1', '2026-03-13 10:58:53', NULL, NULL, NULL),
+('20260313105712', 'Hardware', 'problem 3 Hardware', 'COMPLETED', 'JohnBenedict', '03-13-26 10:57:18', 'tech2', '2026-03-13 10:58:44', '2026-03-13 10:59:46', 'admin', '2026-03-13 11:00:08'),
+('20260313105720', 'Software', 'problem 1 Software', 'COMPLETED', 'JohnBenedict', '03-13-26 10:57:28', 'tech2', '2026-03-13 10:58:35', '2026-03-13 10:59:47', 'admin', '2026-03-13 11:02:10'),
+('20260313105729', 'Software', 'problem 2 Software', 'WAITING FOR APPROVAL', 'JohnBenedict', '03-13-26 10:57:40', 'tech1', '2026-03-13 11:01:19', '2026-03-13 11:02:52', NULL, NULL),
+('20260313105742', 'Software', 'problem 3 Software', 'WAITING FOR APPROVAL', 'JohnBenedict', '03-13-26 10:57:48', 'tech1', '2026-03-13 10:58:20', '2026-03-13 10:59:16', NULL, NULL),
+('20260313105759', 'Connection', 'problem 2 Connection', 'ON-GOING', 'JohnBenedict', '03-13-26 10:58:05', 'tech2', '2026-03-13 11:01:24', NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables

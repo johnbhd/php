@@ -17,7 +17,7 @@ if (isset($_POST['updateBtn'])) {
 
         $_SESSION['message'] = [
             'type' => 'error',
-            'text' => 'You cannot update this ticket because its status is ' . $rowCheck['status']
+            'text' => 'You cannot update this ticket #'.$ticket_number.' because its status is ' . $rowCheck['status']
         ];
 
         echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";

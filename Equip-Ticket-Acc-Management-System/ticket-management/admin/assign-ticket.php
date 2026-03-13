@@ -20,11 +20,11 @@ if (isset($_POST['assignBtn'])) {
         $resultCheck = mysqli_stmt_get_result($stmtCheck);
         $rowCheck = mysqli_fetch_assoc($resultCheck);
 
-        if ($rowCheck['status'] !== "PENDING") {
+        if ($rowCheck['status'] !== "PENDING" && $rowCheck['status'] !== "ON-GOING") {
 
             $_SESSION['message'] = [
                 'type' => 'error',
-                'text' => 'You cannot assign this ticket because its status is ' . $rowCheck['status']
+                'text' => 'You cannot assign this ticket #'.$assigned_id.' because its status is ' . $rowCheck['status']
             ];
 
             echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";

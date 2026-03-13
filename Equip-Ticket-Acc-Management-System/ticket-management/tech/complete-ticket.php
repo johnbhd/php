@@ -14,7 +14,7 @@ if (isset($_POST['completeBtn'])) {
 
             $_SESSION['message'] = [
                 'type' => 'error',
-                'text' => 'You cannot complete this ticket because its status is ' . $rowCheck['status']
+                'text' => 'You cannot complete this ticket #'.$ticket_number.' because its status is ' . $rowCheck['status']
             ];
 
             echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
@@ -25,7 +25,7 @@ if (isset($_POST['completeBtn'])) {
     $stmt = mysqli_prepare($link, $sql);
 
     $dateComplete = date("Y-m-d H:i:s");
-    $status = "FOR APPROVAL";
+    $status = "WAITING FOR APPROVAL";
 
     mysqli_stmt_bind_param($stmt,"sss", $dateComplete, $status, $ticket_number);
 

@@ -14,7 +14,7 @@ if (isset($_POST['btndelete'])) {
 
             $_SESSION['message'] = [
                 'type' => 'error',
-                'text' => 'You cannot delete this ticket because its status is ' . $rowCheck['status']
+                'text' => 'You cannot delete this ticket #'.$id.' because its status is ' . $rowCheck['status']
             ];
 
             echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";

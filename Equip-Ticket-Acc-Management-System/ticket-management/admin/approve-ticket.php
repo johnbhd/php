@@ -13,11 +13,11 @@ if (isset($_POST['approveBtn'])) {
         $resultCheck = mysqli_stmt_get_result($stmtCheck);
         $rowCheck = mysqli_fetch_assoc($resultCheck);
 
-        if ($rowCheck['status'] == "ON-GOING" || $rowCheck['status'] == "COMPLETED" || $rowCheck['status'] == "PENDING") {
+        if ($rowCheck['status'] !== "WAITING FOR APPROVAL" ) {
 
             $_SESSION['message'] = [
                 'type' => 'error',
-                'text' => 'You cannot approve this ticket because its status is ' . $rowCheck['status']
+                'text' => 'You cannot approve this ticket #'.$ticket_number.' because its status is ' . $rowCheck['status']
             ];
 
             echo "<script>window.location.href = '{$_SERVER['PHP_SELF']}';</script>";
